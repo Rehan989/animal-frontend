@@ -24,7 +24,31 @@ const SearchFarmer = () => {
               <button className='btn' type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><li class="list-group-item">name  - mobile number</li></button>
               <div class="collapse" id="collapseExample">
                 <div class="card card-body">
-                  Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                  <div>
+                    Animal registered
+                    <hr/>
+                  </div>
+                  <div class="row align-items-start">
+                    <div className='col'>
+                      Tag no
+                    </div>
+                    <div className='col'>
+                      Date
+                    </div>
+                    <div className='col'>
+                      Species
+                    </div>
+                    <div className='col'>
+                      Breed
+                    </div>
+                    <div className='col'>
+                      Age
+                    </div>
+                    <div className='col'>
+                      No of Calvings
+                    </div>
+                  </div>
+                  <hr/>
                 </div>
               </div>
             </ul>
