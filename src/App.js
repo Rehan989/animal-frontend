@@ -8,6 +8,7 @@ import AiDetails from './Components/Registration/AiDetails';
 import PDRegistration from './Components/Registration/PDRegistration';
 import CalfBornDetails from './Components/Registration/CalfBornDetails';
 import BullSemen from './Components/Registration/BullSemen';
+import Report from './Components/Report';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route exact path="/register/pd" element={<PDRegistration />} />
             <Route exact path="/register/calfdetails" element={<CalfBornDetails />} />
             <Route exact path="/register/bullsemen" element={<BullSemen />} />
+            <Route exact path="/report" element={<Report />} />
           </Routes>
       </BrowserRouter>
     </>
