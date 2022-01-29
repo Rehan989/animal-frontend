@@ -8,8 +8,8 @@ const Navbar = (props) => {
             <a className="nav-link" href="/register/animal">Register Animal</a>
             <a className="nav-link" href="/register/pd">Register PD</a>
             <a className="nav-link" href="/register/bullsemen">Register BullSemen</a>
-            <a className="nav-link" href="/aidetails">AI Details</a>
-            <a className="nav-link" href="/calfdetails">Calf Details</a>
+            <a className="nav-link" href="/register/aidetails">AI Details</a>
+            <a className="nav-link" href="/register/calfdetails">Calf Details</a>
             <a className="nav-link" href="/report">Report</a>
             <a className="nav-link" href="/summaries">Summaries</a>
         </nav>
