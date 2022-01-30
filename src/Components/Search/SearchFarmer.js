@@ -19,16 +19,16 @@ const SearchFarmer = () => {
 
       <div>
         <div className='my-5'>
-          <div class="card">
-            <ul class="list-group list-group-flush">
-              <button className='btn' type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><li class="list-group-item">name  - mobile number</li></button>
-              <div class="collapse" id="collapseExample">
-                <div class="card card-body">
+          <div className="card">
+            <ul className="list-group list-group-flush">
+              <button className='btn' type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><li className="list-group-item">name  - mobile number</li></button>
+              <div className="collapse" id="collapseExample">
+                <div className="card card-body">
                   <div>
                     Animal registered
                     <hr/>
                   </div>
-                  <div class="row align-items-start">
+                  <div className="row align-items-start">
                     <div className='col'>
                       Tag no
                     </div>
