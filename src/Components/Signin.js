@@ -39,11 +39,11 @@ const Signin = () => {
                         </select>
                         <div className="form-floating mb-3">
                             <input type="email" name="email" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={onChange} value={SignInCreds.email} required />
-                            <label htmlFor="floatingInput">Email address</label>
+                            <label htmlhtmlFor="floatingInput">Email address</label>
                         </div>
                         <div className="form-floating">
                             <input type="password" name="password" className="form-control" id="floatingPassword" placeholder="Password" onChange={onChange} value={SignInCreds.password} required />
-                            <label htmlFor="floatingPassword">Password</label>
+                            <label htmlhtmlFor="floatingPassword">Password</label>
                         </div>
                         <button type="submit" className="btn mt-3 btn-primary">Login</button>
                     </form>

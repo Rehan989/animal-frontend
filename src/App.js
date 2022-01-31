@@ -9,22 +9,43 @@ import PDRegistration from './Components/Registration/PDRegistration';
 import CalfBornDetails from './Components/Registration/CalfBornDetails';
 import BullSemen from './Components/Registration/BullSemen';
 import Report from './Components/Report';
+import Dashboard from './Components/Dashboard';
+import DashboardHome from './Components/DashboardHome';
+import { useState } from 'react';
 
 function App() {
+  const [showAlert, setshowAlert] = useState(false);
+  const [alertText, setalertText] = useState("message");
+  const [alertHeading, setalertHeading] = useState("title");
+  function setAlert(title, msg, autoHideDuration = 5000) {
+    console.log("rehan");
+    setalertHeading(title)
+    setalertText(msg);
+    setshowAlert(true);
+    setTimeout(() => {
+      setshowAlert(false)
+    }, autoHideDuration);
+  }
   return (
     <>
+      {(showAlert) ? <div className="alert my-2 mx-2 alert-warning alert-dismissible fade show" role="alert">
+        <strong>{alertHeading}</strong> {alertText}
+        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div> : ''}
       <BrowserRouter>
-          <Routes>
-            <Route exact path="/" element={<Signin />} />
-            <Route exact path="/search/farmer" element={<SearchFarmer />} />
-            <Route exact path="/register/farmer" element={<Farmer />} />
-            <Route exact path="/register/animal" element={<Animal />} />
-            <Route exact path="/register/aidetails" element={<AiDetails />} />
-            <Route exact path="/register/pd" element={<PDRegistration />} />
-            <Route exact path="/register/calfdetails" element={<CalfBornDetails />} />
-            <Route exact path="/register/bullsemen" element={<BullSemen />} />
-            <Route exact path="/report" element={<Report />} />
-          </Routes>
+        <Routes>
+          <Route exact path="/" element={<Signin setshowAlert={setAlert}/>} />
+          <Route exact path="/dashboard"  element={<Dashboard setshowAlert={setAlert} />} />
+          <Route exact path="/dashboard/home"  element={<DashboardHome setshowAlert={setAlert} />} />
+          <Route exact path="/search/farmer" element={<SearchFarmer setshowAlert={setAlert}/>} />
+          <Route exact path="/register/farmer" element={<Farmer setshowAlert={setAlert} />} />
+          <Route exact path="/register/animal"  element={<Animal setshowAlert={setAlert}/>} />
+          <Route exact path="/register/aidetails"  element={<AiDetails setshowAlert={setAlert}/>} />
+          <Route exact path="/register/pd" element={<PDRegistration setshowAlert={setAlert}/>} />
+          <Route exact path="/register/calfdetails" element={<CalfBornDetails setshowAlert={setAlert}/>} />
+          <Route exact path="/register/bullsemen" element={<BullSemen setshowAlert={setAlert}/>} />
+          <Route exact path="/report" element={<Report setshowAlert={setAlert} />} />
+        </Routes>
       </BrowserRouter>
     </>
   );
