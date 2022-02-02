@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from 'react';
 import Signin from './Components/Signin';
 import Farmer from './Components/Registration/Farmer';
@@ -13,6 +13,7 @@ import Report from './Components/Report';
 import Dashboard from './Components/Dashboard';
 import DashboardHome from './Components/DashboardHome';
 import { useState } from 'react';
+import Logout from './Components/Logout';
 
 function App() {
   const [showAlert, setshowAlert] = useState(false);
@@ -47,6 +48,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Signin setshowAlert={setAlert} />} />
+          <Route exact path="/logout" element={<Logout/>} />
           <Route exact path="/dashboard" element={<Dashboard setshowAlert={setAlert} />} />
           <Route exact path="/dashboard/home" element={<DashboardHome setshowAlert={setAlert} />} />
           <Route exact path="/search/farmer" element={<SearchFarmer setshowAlert={setAlert} />} />

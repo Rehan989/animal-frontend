@@ -74,11 +74,11 @@ const DashboardHome = (props) => {
     useEffect(() => {
         if (localStorage.getItem('auth_token')) {
             if (!verifyAdminUser(localStorage.getItem('auth_token'))) {
-                navigate('/')
+                navigate('/dashboard')
             }
         }
         else {
-            navigate('/')
+            navigate('/dashboard')
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -87,7 +87,7 @@ const DashboardHome = (props) => {
         <nav className="nav nav-pills my-3 mx-2 nav-fill">
             <a className="nav-link" data-bs-toggle="collapse" href="#doctorCollapse" role="button" aria-expanded="false" aria-controls="doctorCollapse">Add new doctor</a>
             <a className="nav-link" data-bs-toggle="collapse" href="#techncianCollapse" role="button" aria-expanded="false" aria-controls="techncianCollapse">Add new techncian</a>
-            <a className="nav-link" href="/" role="button" >Logout</a>
+            <a className="nav-link" href="/logout" role="button" >Logout</a>
         </nav>
         <div className='container'>
             {/* for doctor registration */}
