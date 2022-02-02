@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-const Signin = () => {
+const Signin = (props) => {
     const [SignInCreds, setSignInCreds] = useState({ email: "", password: "", userType: "" })
 
     const onChange = (e) => {
@@ -9,21 +9,27 @@ const Signin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (SignInCreds.userType === "0") {
-            console.log("Please provide userType");
-            return
+        try {
+            if (SignInCreds.userType === "0") {
+                console.log("Please provide userType");
+                return
+            }
+            let user = (SignInCreds.userType === "1") ? "doctor" : "technician";
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/login/${user}`, {
+                "method": "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ ...SignInCreds }),
+            })
+            const data = await response.json()
+            console.log(data);
         }
-        let user = (SignInCreds.userType === "1") ? "doctor" : "technician";
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/login/${user}`, {
-            "method": "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({...SignInCreds}),
-        })
-        const data = await response.json()
-        console.log(data);
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
     }
 
     return <div>
@@ -39,11 +45,11 @@ const Signin = () => {
                         </select>
                         <div className="form-floating mb-3">
                             <input type="email" name="email" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={onChange} value={SignInCreds.email} required />
-                            <label htmlhtmlFor="floatingInput">Email address</label>
+                            <label htmlFor="floatingInput">Email address</label>
                         </div>
                         <div className="form-floating">
                             <input type="password" name="password" className="form-control" id="floatingPassword" placeholder="Password" onChange={onChange} value={SignInCreds.password} required />
-                            <label htmlhtmlFor="floatingPassword">Password</label>
+                            <label htmlFor="floatingPassword">Password</label>
                         </div>
                         <button type="submit" className="btn mt-3 btn-primary">Login</button>
                     </form>

@@ -20,20 +20,28 @@ const Dashboard = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/admin/login`, {
-      "method": "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ ...SignInCreds }),
-    })
-    const data = await response.json()
-    if (data.success) {
-      localStorage.setItem("auth_token", data.authtoken)
-      props.setshowAlert("Success", "Login Successful")
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/admin/login`, {
+        "method": "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ ...SignInCreds }),
+      })
+      const data = await response.json()
+      if (data.success) {
+        localStorage.setItem("auth_token", data.authtoken)
+        props.setshowAlert("Success", "Login Successful")
+      }
+      else{
+        props.setshowAlert("Error", `${data.error}`)
+      }
     }
-    console.log(data);
+    catch(error){
+      console.log(error);
+      props.setshowAlert("Error", "Internal Server Error")
+    }
   }
   return <div>
     <div className="text-center">
@@ -43,11 +51,11 @@ const Dashboard = (props) => {
           <form action='/register/farmer' onSubmit={handleSubmit}>
             <div className="form-floating mb-3">
               <input type="email" name="email" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={onChange} value={SignInCreds.email} required />
-              <label htmlhtmlFor="floatingInput">Email address</label>
+              <label htmlFor="floatingInput">Email address</label>
             </div>
             <div className="form-floating">
               <input type="password" name="password" className="form-control" id="floatingPassword" placeholder="Password" onChange={onChange} value={SignInCreds.password} required />
-              <label htmlhtmlFor="floatingPassword">Password</label>
+              <label htmlFor="floatingPassword">Password</label>
             </div>
             <button type="submit" className="btn mt-3 btn-primary">Login</button>
           </form>

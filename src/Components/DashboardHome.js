@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const DashboardHome = () => {
+const DashboardHome = (props) => {
     let navigate = useNavigate()
+    const [doctorCreds, setdoctorCreds] = useState({ doctorName: "", doctorHostpitalName: "", doctorGender: "", doctorEmail: "", doctorPassword: "" })
+
+    async function handleDoctorCredsChange(e) {
+        setdoctorCreds({ ...doctorCreds, [e.target.name]: e.target.value })
+    }
+
     async function verifyAdminUser(auth_token) {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/user/admin`, {
             "method": "POST",
@@ -19,6 +25,52 @@ const DashboardHome = () => {
             return true
         return false
     }
+
+    async function handleDoctorSignUpSubmit(e) {
+        e.preventDefault()
+        try {
+
+            let userGender = "";
+            switch (doctorCreds.doctorGender) {
+                case "1":
+                    userGender = "male"
+                    break
+                case "2":
+                    userGender = "female"
+                    break
+                case "3":
+                    userGender = "transgender"
+                    console.log("youtube");
+                    break
+                default:
+                    props.setshowAlert("Error", "Please select a gender")
+                    return
+            }
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/signup/doctor`, {
+                "method": "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${localStorage.getItem('auth_token')}`
+                },
+                body: JSON.stringify({ name: doctorCreds.doctorName, hospitalName: doctorCreds.doctorHostpitalName, email: doctorCreds.doctorEmail, gender: userGender, password: doctorCreds.doctorPassword }),
+            })
+            const data = await response.json()
+            if(data.success){
+                props.setshowAlert("Success", "Doctor Account created Successfully!")
+                setdoctorCreds({ doctorName: "", doctorHostpitalName: "", doctorGender: "", doctorEmail: "", doctorPassword: "" })
+                return
+            }
+            else{
+                props.setshowAlert("Error", data.error)
+                return
+            }
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
     useEffect(() => {
         if (localStorage.getItem('auth_token')) {
             if (!verifyAdminUser(localStorage.getItem('auth_token'))) {
@@ -28,6 +80,7 @@ const DashboardHome = () => {
         else {
             navigate('/')
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <div>
@@ -41,30 +94,30 @@ const DashboardHome = () => {
             <div className="collapse mt-2" id="doctorCollapse">
                 <div className="card card-body">
                     <h1>Add new doctor</h1>
-                    <form>
+                    <form onSubmit={handleDoctorSignUpSubmit}>
                         <div className="mb-3">
-                            <label htmlFor="name" className="form-label">Full name</label>
-                            <input className="form-control" type="text" name="name" placeholder="Enter doctor's name" aria-label="name" required minLength={true} />
+                            <label htmlFor="doctorName" className="form-label">Full name</label>
+                            <input onChange={handleDoctorCredsChange} value={doctorCreds.doctorName} className="form-control" type="text" id="doctorName" name="doctorName" placeholder="Enter doctor's name" aria-label="doctorName" required minLength={3} />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="hostpitalName" className="form-label">Hostpital name</label>
-                            <input className="form-control" type="text" name="hostpitalName" placeholder="Enter Hospital name" aria-label="hostpitalName" required />
+                            <label htmlFor="doctorHostpitalName" className="form-label">Hostpital name</label>
+                            <input onChange={handleDoctorCredsChange} value={doctorCreds.doctorHostpitalName} className="form-control" type="text" name="doctorHostpitalName" placeholder="Enter Hospital name" aria-label="doctorHostpitalName" required />
                         </div>
-                        <select className="form-select form-select mb-3" required={true} aria-label=".form-select example">
-                            <option selected>Gender</option>
+                        <select onChange={handleDoctorCredsChange} value={doctorCreds.doctorGender} className="form-select form-select mb-3" name="doctorGender" required={true} aria-label=".form-select example">
+                            <option>Gender</option>
                             <option value="1">Male</option>
                             <option value="2">Female</option>
                             <option value="3">Transgender</option>
                         </select>
                         <div className="mb-3">
-                            <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-                            <input type="email" name="email" className="form-control" id="name" placeholder="name@example.com" required />
+                            <label htmlFor="doctorEmail" className="form-label">Email address</label>
+                            <input onChange={handleDoctorCredsChange} value={doctorCreds.doctorEmail} type="email" name="doctorEmail" className="form-control" id="doctorEmail" placeholder="name@example.com" required />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="exampleFormControlInput1" name="password" placeholder="password" required />
+                            <label htmlFor="doctorPassword" className="form-label">Password</label>
+                            <input onChange={handleDoctorCredsChange} value={doctorCreds.doctorPassword} type="password" className="form-control" id="exampleFormControlInput1doctorPassword" name="doctorPassword" placeholder="password" required minLength={6} />
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" className="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
@@ -74,49 +127,49 @@ const DashboardHome = () => {
                     <h1>Add new technician</h1>
                     <form>
                         <div className="mb-3">
-                            <label htmlFor="name" className="form-label">Full name</label>
-                            <input className="form-control" type="text" name="name" placeholder="Enter doctor's name" aria-label="name" required minLength={true} />
+                            <label htmlFor="technicianName" className="form-label">Full name</label>
+                            <input className="form-control" type="text" name="technicianName" placeholder="Enter Technician's name" aria-label="technicianName" required minLength={3} />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="address" className="form-label">Address</label>
-                            <input className="form-control" type="text" name="address" placeholder="Address" aria-label="address" required minLength={true} />
+                            <label htmlFor="technicianAddress" className="form-label">Address</label>
+                            <input className="form-control" type="text" name="technicianAddress" id="technicianAddress" placeholder="Address" aria-label="technicianAddress" required />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="education" className="form-label">Education</label>
-                            <input className="form-control" type="text" name="education" placeholder="Address" aria-label="education" required minLength={true} />
+                            <label htmlFor="technicianEducation" className="form-label">Education</label>
+                            <input className="form-control" type="text" name="technicianEducation" placeholder="Address" aria-label="technicianEducation" required />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="villageName" className="form-label">Village name</label>
-                            <input className="form-control" type="text" name="villageName" placeholder="Enter village name" aria-label="villageName" required />
+                            <label htmlFor="technicianVillageName" className="form-label">Village name</label>
+                            <input className="form-control" type="text" name="technicianVillageName" placeholder="Enter village name" aria-label="technicianVillageName" required />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="taluka" className="form-label">Taluka</label>
-                            <input className="form-control" type="text" name="taluka" placeholder="Enter taluka name" aria-label="taluka" required />
+                            <label htmlFor="technicianTaluka" className="form-label">Taluka</label>
+                            <input className="form-control" type="text" name="technicianTaluka" placeholder="Enter taluka name" aria-label="technicianTaluka" required />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="district" className="form-label">District</label>
-                            <input className="form-control" type="text" name="district" placeholder="Enter district name" aria-label="district" required />
+                            <label htmlFor="technicianDistrict" className="form-label">District</label>
+                            <input className="form-control" type="text" name="technicianDistrict" placeholder="Enter district name" aria-label="technicianDistrict" required />
                         </div>
-                        <label htmlFor="doctor" className="form-label">Doctor</label>
+                        <label htmlFor="technicianDoctor" className="form-label">Doctor</label>
                         <div className=" input-group mb-3">
-                            <input className="form-control" type="text" name="doctor" placeholder="Enter doctor name" aria-label="doctor" required />
+                            <input className="form-control" type="text" name="technicianDoctor" placeholder="Enter doctor name" aria-label="technicianDoctor" required />
                             <button type='button' className='btn btn-primary'>Search</button>
                         </div>
-                        <select className="form-select form-select mb-3" required={true} aria-label=".form-select example">
-                            <option selected>Gender</option>
+                        <select className="form-select form-select mb-3" required={true} name="technicianGender" aria-label=".form-select example">
+                            <option>Gender</option>
                             <option value="1">Male</option>
                             <option value="2">Female</option>
                             <option value="3">Transgender</option>
                         </select>
                         <div className="mb-3">
-                            <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-                            <input type="email" name="email" className="form-control" id="name" placeholder="name@example.com" required />
+                            <label htmlFor="technicianEmail" className="form-label">Email address</label>
+                            <input type="email" name="technicianEmail" className="form-control" aria-label='technicianEmail' id="technicianEmail" placeholder="name@example.com" required />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="exampleFormControlInput1" name="password" placeholder="password" required />
+                            <label htmlFor="technicianPassword" className="form-label">Password</label>
+                            <input type="password" className="form-control" id="technicianPassword" name="technicianPassword" aria-label='technicianPassword' placeholder="password" required />
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" className="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
