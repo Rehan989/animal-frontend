@@ -32,10 +32,12 @@ const Dashboard = (props) => {
       const data = await response.json()
       if (data.success) {
         localStorage.setItem("auth_token", data.authtoken)
+        localStorage.setItem("user_type", 'admin')
         props.setshowAlert("Success", "Login Successful")
       }
       else{
         props.setshowAlert("Error", `${data.error}`)
+        return
       }
     }
     catch(error){

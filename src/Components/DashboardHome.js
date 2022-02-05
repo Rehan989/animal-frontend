@@ -243,7 +243,7 @@ const DashboardHome = (props) => {
                         </div>
                         <label htmlFor="technicianDoctor" className="form-label">Doctor</label>
                         <div className=" input-group mb-3">
-                            <input className="form-control" type="text" name="technicianDoctor" placeholder="Enter doctor name" aria-label="technicianDoctor" required onChange={onTechnicianCredsChange} value={technicianCreds.technicianDoctor} />
+                            <input className="form-control" type="text" name="technicianDoctor" placeholder="Enter doctor name" aria-label="technicianDoctor" onChange={onTechnicianCredsChange} value={technicianCreds.technicianDoctor} />
                             <button type='button' onClick={() => SearchDoctors(technicianCreds.technicianDoctor)} className='btn btn-primary'>Search</button>
                         </div>
                         {ShowDoctors ? <select className="form-select form-select mb-3" required={true} name="technicianDoctorId" aria-label=".form-select example" onChange={onTechnicianCredsChange} value={technicianCreds.technicianDoctorId}>

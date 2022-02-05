@@ -20,7 +20,6 @@ function App() {
   const [alertText, setalertText] = useState("message");
   const [alertHeading, setalertHeading] = useState("title");
   function setAlert(title, msg, autoHideDuration = 10000) {
-    console.log("rehan");
     setalertHeading(title)
     setalertText(msg);
     setshowAlert(true);
@@ -43,7 +42,7 @@ function App() {
     <>
       <div id="alertBody" className="fixed-top alert my-2 mx-2 alert-warning alert-dismissible fade show" role="alert">
         <strong>{alertHeading}</strong>: {alertText}
-        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" className="btn-close" onClick={()=>setshowAlert(false)}></button>
       </div>
       <BrowserRouter>
         <Routes>

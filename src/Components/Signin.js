@@ -1,7 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
 const Signin = (props) => {
-    const [SignInCreds, setSignInCreds] = useState({ email: "", password: "", userType: "" })
+    let navigate = useNavigate()
+    const [SignInCreds, setSignInCreds] = useState({ email: "", password: "", userType: "0" })
 
     const onChange = (e) => {
         setSignInCreds({ ...SignInCreds, [e.target.name]: e.target.value });
@@ -11,7 +15,7 @@ const Signin = (props) => {
         e.preventDefault()
         try {
             if (SignInCreds.userType === "0") {
-                console.log("Please provide userType");
+                props.setshowAlert("Error", "Please provide user type!")
                 return
             }
             let user = (SignInCreds.userType === "1") ? "doctor" : "technician";
@@ -24,7 +28,16 @@ const Signin = (props) => {
                 body: JSON.stringify({ ...SignInCreds }),
             })
             const data = await response.json()
-            console.log(data);
+            if (data.success) {
+                localStorage.setItem("auth_token", data.authtoken)
+                localStorage.setItem("user_type", user)
+                props.setshowAlert("Success", "Login Successful")
+                navigate('/search/farmer')
+            }
+            else {
+                props.setshowAlert("Error", `${data.error}`)
+                return
+            }
         }
         catch (error) {
             console.log(error);
@@ -32,14 +45,21 @@ const Signin = (props) => {
         }
     }
 
+    useEffect(() => {
+        if(localStorage.getItem('auth_token')){
+            navigate('/search/farmer/')
+        }
+    }, []);
+    
+
     return <div>
         <div className="text-center">
             <div className='container'>
                 <div className='position-absolute top-50 start-50 translate-middle'>
                     <h1 className='mb-5'>Welcome</h1>
                     <form action='/register/farmer' onSubmit={handleSubmit}>
-                        <select className="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name='userType' onChange={onChange} defaultValue={"0"} required>
-                            <option value={"0"}>Who are you?</option>
+                        <select className="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name='userType' onChange={onChange} required>
+                            <option defaultValue value="0">Who are you?</option>
                             <option value="1">Doctor</option>
                             <option value="2">Technician</option>
                         </select>
