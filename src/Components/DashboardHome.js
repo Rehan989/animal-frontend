@@ -11,6 +11,7 @@ const DashboardHome = (props) => {
     })
     const [ShowDoctors, setShowDoctors] = useState(false);
     const [Doctors, setDoctors] = useState([]);
+    const [isAdmin, setisAdmin] = useState(false)
 
     async function handleDoctorCredsChange(e) {
         setdoctorCreds({ ...doctorCreds, [e.target.name]: e.target.value })
@@ -29,9 +30,11 @@ const DashboardHome = (props) => {
             },
         })
         let data = await response.json();
-        if (response.status === "200")
+        if (response.status===200)
             return true
-        return false
+        else {
+            return false
+        }
     }
 
     async function handleDoctorSignUpSubmit(e) {
@@ -157,19 +160,21 @@ const DashboardHome = (props) => {
 
 
     useEffect(() => {
+        let admin = false;
+        async function fetchData(){
+            admin = await verifyAdminUser(localStorage.getItem('auth_token'))
+            console.log(admin);
+            setisAdmin(true)
+        }
         if (localStorage.getItem('auth_token')) {
-            if (!verifyAdminUser(localStorage.getItem('auth_token'))) {
-                navigate('/dashboard')
-            }
+            fetchData()
         }
         else {
             navigate('/dashboard')
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isAdmin]);
 
-
-    return <div>
+    return (isAdmin) ? <div>
         <nav className="nav nav-pills my-3 mx-2 nav-fill">
             <a className="nav-link" data-bs-toggle="collapse" href="#doctorCollapse" role="button" aria-expanded="false" aria-controls="doctorCollapse">Add new doctor</a>
             <a className="nav-link" data-bs-toggle="collapse" href="#techncianCollapse" role="button" aria-expanded="false" aria-controls="techncianCollapse">Add new techncian</a>
@@ -268,7 +273,7 @@ const DashboardHome = (props) => {
                 </div>
             </div>
         </div>
-    </div>;
+    </div> : ''
 };
 
 export default DashboardHome;
