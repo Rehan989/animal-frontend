@@ -30,9 +30,10 @@ const Dashboard = (props) => {
         body: JSON.stringify({ ...SignInCreds }),
       })
       const data = await response.json()
+      console.log(data);
       if (data.success) {
         localStorage.setItem("auth_token", data.authtoken)
-        localStorage.setItem("user_type", 'admin')
+        localStorage.setItem("user_type", data.user_type)
         props.setshowAlert("Success", "Login Successful")
       }
       else{

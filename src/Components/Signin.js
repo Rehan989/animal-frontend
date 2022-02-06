@@ -30,9 +30,14 @@ const Signin = (props) => {
             const data = await response.json()
             if (data.success) {
                 localStorage.setItem("auth_token", data.authtoken)
-                localStorage.setItem("user_type", user)
+                localStorage.setItem("user_type", data.user_type)
                 props.setshowAlert("Success", "Login Successful")
-                navigate('/search/farmer')
+                if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='technician'){
+                    navigate('/search/farmer/')
+                }
+                if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='doctor'){
+                    navigate('/report')
+                }
             }
             else {
                 props.setshowAlert("Error", `${data.error}`)
@@ -46,8 +51,11 @@ const Signin = (props) => {
     }
 
     useEffect(() => {
-        if(localStorage.getItem('auth_token')){
+        if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='technician'){
             navigate('/search/farmer/')
+        }
+        if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='doctor'){
+            navigate('/report')
         }
     }, []);
     

@@ -6,6 +6,7 @@ const Logout = () => {
     let navigate = useNavigate();
     if (localStorage.getItem('auth_token')) {
         localStorage.removeItem('auth_token')
+        localStorage.removeItem('user_type')
     }
     useEffect(() => {
         navigate('/')

@@ -42,22 +42,28 @@ function App() {
     <>
       <div id="alertBody" className="fixed-top alert my-2 mx-2 alert-warning alert-dismissible fade show" role="alert">
         <strong>{alertHeading}</strong>: {alertText}
-        <button type="button" className="btn-close" onClick={()=>setshowAlert(false)}></button>
+        <button type="button" className="btn-close" onClick={() => setshowAlert(false)}></button>
       </div>
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Signin setshowAlert={setAlert} />} />
-          <Route exact path="/logout" element={<Logout/>} />
+          <Route exact path="/logout" element={<Logout />} />
           <Route exact path="/dashboard" element={<Dashboard setshowAlert={setAlert} />} />
           <Route exact path="/dashboard/home" element={<DashboardHome setshowAlert={setAlert} />} />
-          <Route exact path="/search/farmer" element={<SearchFarmer setshowAlert={setAlert} />} />
-          <Route exact path="/register/farmer" element={<Farmer setshowAlert={setAlert} />} />
-          <Route exact path="/register/animal" element={<Animal setshowAlert={setAlert} />} />
-          <Route exact path="/register/aidetails" element={<AiDetails setshowAlert={setAlert} />} />
-          <Route exact path="/register/pd" element={<PDRegistration setshowAlert={setAlert} />} />
-          <Route exact path="/register/calfdetails" element={<CalfBornDetails setshowAlert={setAlert} />} />
-          <Route exact path="/register/bullsemen" element={<BullSemen setshowAlert={setAlert} />} />
           <Route exact path="/report" element={<Report setshowAlert={setAlert} />} />
+          {
+            (localStorage.getItem('user_type') === 'technician') ?
+              <>
+                <Route exact path="/search/farmer" element={<SearchFarmer setshowAlert={setAlert} />} />
+                <Route exact path="/register/farmer" element={<Farmer setshowAlert={setAlert} />} />
+                <Route exact path="/register/animal" element={<Animal setshowAlert={setAlert} />} />
+                <Route exact path="/register/aidetails" element={<AiDetails setshowAlert={setAlert} />} />
+                <Route exact path="/register/pd" element={<PDRegistration setshowAlert={setAlert} />} />
+                <Route exact path="/register/calfdetails" element={<CalfBornDetails setshowAlert={setAlert} />} />
+                <Route exact path="/register/bullsemen" element={<BullSemen setshowAlert={setAlert} />} />
+              </>
+              :
+              ''}
         </Routes>
       </BrowserRouter>
     </>
