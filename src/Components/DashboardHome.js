@@ -30,7 +30,7 @@ const DashboardHome = (props) => {
             },
         })
         let data = await response.json();
-        if (response.status===200)
+        if (response.status === 200)
             return true
         else {
             return false
@@ -145,6 +145,11 @@ const DashboardHome = (props) => {
             console.log(data);
             if (data.success) {
                 setDoctors(data.doctors)
+                if (data.doctors.length === 0) {
+                    props.setshowAlert("Error", `Doctor with the name not found!`)
+                    setShowDoctors(false)
+                    return
+                }
                 setShowDoctors(true)
             }
             else {
@@ -161,7 +166,7 @@ const DashboardHome = (props) => {
 
     useEffect(() => {
         let admin = false;
-        async function fetchData(){
+        async function fetchData() {
             admin = await verifyAdminUser(localStorage.getItem('auth_token'))
             console.log(admin);
             setisAdmin(true)
