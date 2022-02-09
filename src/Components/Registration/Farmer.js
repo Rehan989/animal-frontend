@@ -14,6 +14,7 @@ const Farmer = (props) => {
         addhar: "",
         gender: ""
     });
+    const [submitButtonLoading, setsubmitButtonLoading] = useState(false)
 
     const onChange = (e) => {
         setCreds({ ...creds, [e.target.name]: e.target.value });
@@ -34,7 +35,7 @@ const Farmer = (props) => {
 
     const registerFarmer = async (e) => {
         e.preventDefault()
-        console.log(creds);
+        setsubmitButtonLoading(true);
         try {
             let userGender = "";
             switch (creds.gender) {
@@ -95,6 +96,9 @@ const Farmer = (props) => {
         catch (error) {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
+        }
+        finally {
+            setsubmitButtonLoading(false)
         }
     }
 
@@ -173,7 +177,7 @@ const Farmer = (props) => {
                     <option value="2">Female</option>
                     <option value="3">Transgender</option>
                 </select>
-                <button type="submit" className="btn btn-primary mt-5">Register</button>
+                <button type="submit" className="btn mt-3 btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Submitting...' : 'Submit'}</button>
             </form>
         </div>
     </div >;

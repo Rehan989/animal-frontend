@@ -11,11 +11,14 @@ const DashboardHome = (props) => {
     })
     const [ShowDoctors, setShowDoctors] = useState(false);
     const [Doctors, setDoctors] = useState([]);
-    const [isAdmin, setisAdmin] = useState(false)
+    const [isAdmin, setisAdmin] = useState(false);
+    const [DoctorSubmitButtonLoading, setDoctorSubmitButtonLoading] = useState(false);
+    const [TechnicianSubmitButtonLoading, setTechnicianSubmitButtonLoading] = useState(false);
 
     async function handleDoctorCredsChange(e) {
         setdoctorCreds({ ...doctorCreds, [e.target.name]: e.target.value })
     }
+
     async function onTechnicianCredsChange(e) {
         settechnicianCreds({ ...technicianCreds, [e.target.name]: e.target.value })
     }
@@ -38,7 +41,8 @@ const DashboardHome = (props) => {
     }
 
     async function handleDoctorSignUpSubmit(e) {
-        e.preventDefault()
+        e.preventDefault();
+        setDoctorSubmitButtonLoading(true);
         try {
 
             let userGender = "";
@@ -81,11 +85,14 @@ const DashboardHome = (props) => {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
         }
+        finally {
+            setDoctorSubmitButtonLoading(false)
+        }
     }
-
 
     async function handleTechnicianSignupSubmit(e) {
         e.preventDefault();
+        setTechnicianSubmitButtonLoading(true)
         try {
             let userGender = "";
             switch (technicianCreds.technicianGender) {
@@ -128,6 +135,9 @@ const DashboardHome = (props) => {
         catch (error) {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
+        }
+        finally {
+            setTechnicianSubmitButtonLoading(false)
         }
     }
 
@@ -213,7 +223,7 @@ const DashboardHome = (props) => {
                             <label htmlFor="doctorPassword" className="form-label">Password</label>
                             <input onChange={handleDoctorCredsChange} value={doctorCreds.doctorPassword} type="password" className="form-control" id="exampleFormControlInput1doctorPassword" name="doctorPassword" placeholder="password" required minLength={6} />
                         </div>
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button type="submit" className="btn btn-primary" disabled={(DoctorSubmitButtonLoading) ? true : false}>{(DoctorSubmitButtonLoading) ? 'Submitting...' : 'Submit'}</button>
                     </form>
                 </div>
             </div>
@@ -273,7 +283,7 @@ const DashboardHome = (props) => {
                             <label htmlFor="technicianPassword" className="form-label">Password</label>
                             <input type="password" className="form-control" id="technicianPassword" name="technicianPassword" aria-label='technicianPassword' placeholder="password" required onChange={onTechnicianCredsChange} value={technicianCreds.technicianPassword} />
                         </div>
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button type="submit" className="btn btn-primary" disabled={(TechnicianSubmitButtonLoading) ? true : false}>{(TechnicianSubmitButtonLoading) ? 'Submitting...' : 'Submit'}</button>
                     </form>
                 </div>
             </div>

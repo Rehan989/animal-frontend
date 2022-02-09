@@ -6,13 +6,15 @@ import { useEffect } from 'react';
 const Signin = (props) => {
     let navigate = useNavigate()
     const [SignInCreds, setSignInCreds] = useState({ email: "", password: "", userType: "0" })
+    const [signinButtonLoading, setsigninButtonLoading] = useState(false)
 
     const onChange = (e) => {
         setSignInCreds({ ...SignInCreds, [e.target.name]: e.target.value });
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setsigninButtonLoading(true);
         try {
             if (SignInCreds.userType === "0") {
                 props.setshowAlert("Error", "Please provide user type!")
@@ -32,10 +34,10 @@ const Signin = (props) => {
                 localStorage.setItem("auth_token", data.authtoken)
                 localStorage.setItem("user_type", data.user_type)
                 props.setshowAlert("Success", "Login Successful")
-                if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='technician'){
+                if (localStorage.getItem('auth_token') && localStorage.getItem('user_type') === 'technician') {
                     navigate('/search/farmer/')
                 }
-                if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='doctor'){
+                if (localStorage.getItem('auth_token') && localStorage.getItem('user_type') === 'doctor') {
                     navigate('/report')
                 }
             }
@@ -48,17 +50,20 @@ const Signin = (props) => {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
         }
+        finally {
+            setsigninButtonLoading(false)
+        }
     }
 
     useEffect(() => {
-        if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='technician'){
+        if (localStorage.getItem('auth_token') && localStorage.getItem('user_type') === 'technician') {
             navigate('/search/farmer/')
         }
-        if(localStorage.getItem('auth_token') && localStorage.getItem('user_type')==='doctor'){
+        if (localStorage.getItem('auth_token') && localStorage.getItem('user_type') === 'doctor') {
             navigate('/report')
         }
     }, []);
-    
+
 
     return <div>
         <div className="text-center">
@@ -79,7 +84,7 @@ const Signin = (props) => {
                             <input type="password" name="password" className="form-control" id="floatingPassword" placeholder="Password" onChange={onChange} value={SignInCreds.password} required />
                             <label htmlFor="floatingPassword">Password</label>
                         </div>
-                        <button type="submit" className="btn mt-3 btn-primary">Login</button>
+                        <button type="submit" className="btn mt-3 btn-primary" disabled={(signinButtonLoading) ? true : false}>{(signinButtonLoading) ? 'Submitting...' : 'Submit'}</button>
                     </form>
                 </div>
             </div>

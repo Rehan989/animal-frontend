@@ -16,6 +16,7 @@ const Animal = (props) => {
         farmerId: "",
         farmerName: ""
     });
+    const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
     const onChange = (e) => {
         setCreds({ ...creds, [e.target.name]: e.target.value });
@@ -74,6 +75,7 @@ const Animal = (props) => {
 
     const handleAnimalRegister = async (e) => {
         e.preventDefault()
+        setsubmitButtonLoading(true)
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/register/animal/`, {
                 "method": "POST",
@@ -118,6 +120,9 @@ const Animal = (props) => {
         catch (error) {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
+        }
+        finally {
+            setsubmitButtonLoading(false);
         }
     }
 
@@ -192,7 +197,7 @@ const Animal = (props) => {
                     <span className="input-group-text" id="calvings">No of calvings:</span>
                     <input type="number" className="form-control" placeholder="Number of calvings" aria-label="calvings" aria-describedby="calvings" required={true} name="noOfCalvings" value={creds.noOfCalvings} onChange={onChange} />
                 </div>
-                <button type="submit" className="btn btn-primary mt-5">Register</button>
+                <button type="submit" className="btn btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Submitting...' : 'Submit'}</button>
             </form>
         </div>
     </div>;

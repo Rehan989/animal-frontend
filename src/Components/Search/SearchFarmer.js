@@ -7,6 +7,7 @@ const SearchFarmer = (props) => {
   const [showFarmers, setshowFarmers] = useState(false);
   const [showAnimals, setshowAnimals] = useState(false);
   const [showDataNotFound, setshowDataNotFound] = useState(false);
+  const [searchButtonLoading, setsearchButtonLoading] = useState(false)
 
   const fetchAnimals = async (farmerId) => {
     try {
@@ -34,7 +35,8 @@ const SearchFarmer = (props) => {
   }
 
   const searchFarmer = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setsearchButtonLoading(true)
     try {
       if (farmerName.length <= 3) {
         props.setshowAlert("Error", "Search query must be greater than 3 characters")
@@ -82,6 +84,9 @@ const SearchFarmer = (props) => {
       console.log(error);
       props.setshowAlert("Error", "Internal Server Error")
     }
+    finally {
+      setsearchButtonLoading(false)
+    }
   }
 
   return <div>
@@ -95,7 +100,7 @@ const SearchFarmer = (props) => {
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Enter name of the farmer</span>
           <input value={farmerName} onChange={(e) => setFarmerName(e.target.value)} type="text" className="form-control" placeholder="name" aria-label="Username" aria-describedby="basic-addon1" />
-          <button type="submit" className="btn btn-primary">Search</button>
+          <button type="submit" className="btn btn-primary" disabled={(searchButtonLoading) ? true : false}>{(searchButtonLoading) ? 'Submitting...' : 'Submit'}</button>
         </div>
       </form>
 
