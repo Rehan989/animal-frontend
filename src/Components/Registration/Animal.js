@@ -37,7 +37,7 @@ const Animal = (props) => {
     const searchFarmer = async (e) => {
         try {
             if (creds.farmerName.length <= 3) {
-                props.setshowAlert("Error", "Search query must be greater than 3 carachters")
+                props.setshowAlert("Error", "Search query must be greater than 3 characters")
                 return
             }
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer/${creds.farmerName}/`, {
@@ -53,7 +53,7 @@ const Animal = (props) => {
             if (data.success) {
                 setFarmers(data.farmers)
                 if (data.farmers.length === 0) {
-                    props.setshowAlert("Error", `Doctor with the name not found!`)
+                    props.setshowAlert("Error", `No Farmers found with the matching name!`)
                     setshowFarmer(false)
                     return
                 }
