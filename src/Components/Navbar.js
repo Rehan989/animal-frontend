@@ -27,7 +27,8 @@ const Navbar = (props) => {
             }
         }
         catch (error) {
-            navigate('/')
+            navigate('/');
+            localStorage.clear()
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
         }

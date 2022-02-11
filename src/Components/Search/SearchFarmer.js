@@ -11,7 +11,7 @@ const SearchFarmer = (props) => {
 
   const fetchAnimals = async (farmerId) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/animals/${farmerId}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/animals?farmerid=${farmerId}`, {
         "method": "GET",
         headers: {
           "Content-Type": "application/json",
@@ -67,6 +67,7 @@ const SearchFarmer = (props) => {
           setshowAnimals(true)
         })
         setFarmers(data.farmers)
+        console.log(data.farmers)
         if (data.farmers.length === 0) {
           setshowDataNotFound(true)
           props.setshowAlert("Error", `No Farmers found with the matching name!`)
@@ -110,11 +111,21 @@ const SearchFarmer = (props) => {
             farmers.map(farmer => {
               return <div key={`${farmer.mobileNo}`} className="card my-3">
                 <ul className="list-group list-group-flush">
-                  <button className='btn' type="button" data-bs-toggle="collapse" data-bs-target={`#${farmer.name}${farmer.mobileNo}`} aria-expanded="false" aria-controls={`$${farmer.name}${farmer.mobileNo}`}><li className="list-group-item">{farmer.name}  - {farmer.mobileNo}</li></button>
-                  <div className="collapse" id={`${farmer.name}${farmer.mobileNo}`}>
+                  <button className='btn' type="button" data-bs-toggle="collapse" data-bs-target={`#${farmer.name.replaceAll(' ', '-')}${farmer.mobileNo}`} aria-expanded="false" aria-controls={`$${farmer.name.replaceAll(' ', '-')}${farmer.mobileNo}`}><li className="list-group-item">{farmer.name}  - {farmer.mobileNo}</li></button>
+                  <div className="collapse" id={`${farmer.name.replaceAll(' ', '-')}${farmer.mobileNo}`}>
                     <div className="card card-body">
                       <div>
+                        <strong>Name</strong>: {farmer.name}<br />
+                        <strong>Addhar card number</strong>: {farmer.addhar}<br />
+                        <strong>Ration card number</strong>: {farmer.rationCard}<br />
+                        <strong>Village</strong>: {farmer.village}<br />
+                        <strong>Gender</strong>: {farmer.sex}<br />
+                        <strong>Phone Number</strong>: {farmer.mobileNo}<br />
+                        <hr />
+                      </div>
+                      <div>
                         Animal registered
+                        <hr />
                       </div>
                       {(farmer.animals.length !== 0 && showAnimals) ?
                         farmer.animals.map(animal => {

@@ -19,7 +19,7 @@ function App() {
   const [showAlert, setshowAlert] = useState(false);
   const [alertText, setalertText] = useState("message");
   const [alertHeading, setalertHeading] = useState("title");
-  function setAlert(title, msg, autoHideDuration = 10000) {
+  function setAlert(title, msg, autoHideDuration = 8000) {
     setalertHeading(title)
     setalertText(msg);
     setshowAlert(true);

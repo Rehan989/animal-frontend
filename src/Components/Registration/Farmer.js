@@ -21,16 +21,23 @@ const Farmer = (props) => {
     }
 
     const fetchVillages = async () => {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/get/villages/`, {
-            "method": "GET",
-            headers: {
-                "Content-Type": "application/json",
-                'Accept': 'application/json'
-            }
-        })
-        const data = await response.json()
-        setVillages(data);
-        setVillagesLoading(false);
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/get/villages/`, {
+                "method": "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json'
+                }
+            })
+            const data = await response.json()
+            setVillages(data);
+            setVillagesLoading(false);
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+            return
+        }
     }
 
     const registerFarmer = async (e) => {
@@ -91,7 +98,6 @@ const Farmer = (props) => {
                 props.setshowAlert("Error", data.error)
                 return
             }
-            console.log(data);
         }
         catch (error) {
             console.log(error);
