@@ -52,15 +52,6 @@ const SearchFarmer = (props) => {
       })
       const data = await response.json()
       if (data.success) {
-        // data.farmers.map(farmer => {
-        //   farmer.animals.map(async (animalId) => {
-        //     let animal = await fetchAnimal(animalId);
-        //     farmer.animals[farmer.animals.indexOf(animalId)] = animal;
-        //     return;
-        //   })
-        //   return;
-        // })
-
         await data.farmers.map(async (farmer) => {
           let farmerAnimals = await fetchAnimals(farmer.mobileNo);
           farmer.animals = farmerAnimals;

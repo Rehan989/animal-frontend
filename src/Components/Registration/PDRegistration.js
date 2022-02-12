@@ -1,21 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar'
 
 const PDRegistration = (props) => {
     const [tagNo, settagNo] = useState("");
-    const [animal, setanimal] = useState("");
+
     const [creds, setCreds] = useState({
         animalTagNo: "",
-        date: "",
-        pdResult: "",
+        bullId: "",
+        villageName: "",
+        ownerName: "",
+        aiDate: "",
         breed: "",
-        age: "",
+        species: "",
+        freshReports: "",
+        pdDate: "",
+        pdResult: "",
+        pdDays: "",
         doctorName: ""
     });
+    const onChange = (e) => {
+        setCreds({ ...creds, [e.target.name]: e.target.value })
+    }
 
-    const searchAnimal = async (tagno) => {
+    const fetchAiDetails = async (tagNo) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/animals?tagno=${tagno}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/aidetails/${tagNo}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -25,11 +34,7 @@ const PDRegistration = (props) => {
             })
             const data = await response.json()
             if (data.success) {
-                setanimal(data.animals)
-                if (!data.animals) {
-                    props.setshowAlert("Error", "No bull found with the specific tag Number")
-                }
-                console.log(data.animals)
+                return data.aidetails
             }
             else {
                 props.setshowAlert("Error", `${data.error}`)
@@ -41,6 +46,119 @@ const PDRegistration = (props) => {
             props.setshowAlert("Error", "Internal Server Error")
         }
     }
+
+    const fetchFarmer = async (farmerPhoneNumber) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer?phone=${farmerPhoneNumber}`, {
+                "method": "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${localStorage.getItem('auth_token')}`
+                },
+            })
+            const data = await response.json()
+            if (data.success) {
+                return data.farmerUser
+            }
+            else {
+                props.setshowAlert("Error", `${data.error}`)
+                return
+            }
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
+
+    const fetchTechnician = async (auth_token, userType) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/user/${userType}`, {
+                "method": "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${auth_token}`
+                },
+            })
+            const data = await response.json()
+            if (data.email) {
+                return data
+            }
+            props.setshowAlert("Error", "Invalid credentials!")
+            return
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
+
+    const fetchDoctor = async (doctor_id) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/doctor?email=${doctor_id}`, {
+                "method": "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${localStorage.getItem('auth_token')}`
+                },
+            })
+            const data = await response.json()
+            if (data.success) {
+                return data.doctor
+            }
+            else {
+                props.setshowAlert("Error", `${data.error}`)
+                return
+            }
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
+
+    const searchAnimal = async (tagno) => {
+        try {
+            setCreds({ ...creds, animalTagNo: tagNo });
+
+            let aidetails = await fetchAiDetails(tagno);
+
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/animals?tagno=${tagno}`, {
+                "method": "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${localStorage.getItem('auth_token')}`
+                },
+            })
+            const data = await response.json()
+            if (data.success) {
+                let farmerDetails = await fetchFarmer(data.animals.farmerId);
+                let techncianUser = await fetchTechnician(localStorage.getItem('auth_token'), localStorage.getItem('user_type'))
+                let doctorDetails = await fetchDoctor(techncianUser.doctor);
+                setCreds({
+                    ...creds, breed: data.animals.breed, species: data.animals.species, freshReports: aidetails.freshReports, bullId: aidetails.bullId, aiDate: aidetails.date.substring(0, 10),
+                    villageName: farmerDetails.village, ownerName: farmerDetails.name, doctorName: doctorDetails.name
+                });
+                if (!data.animals) {
+                    props.setshowAlert("Error", "No bull found with the specific tag Number")
+                }
+            }
+            else {
+                props.setshowAlert("Error", `${data.error}`)
+                return
+            }
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
+
+
     return <div>
         <Navbar />
         <div className='container mt-5'>
@@ -51,66 +169,52 @@ const PDRegistration = (props) => {
                     <input type="number" className="form-control" required={true} placeholder="Enter bull Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
                     <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
                 </div>
-                <div>
-                    {(animal !== "") ?
-                        <div className='my-5'>
-                            <div className="card">
-                                <ul className="list-group list-group-flush">
-                                    <button className='btn' type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><li className="list-group-item">name  - mobile number</li></button>
-                                    <div className="collapse" id="collapseExample">
-                                        <div className="card card-body">
-                                            <div>
-                                                Animal Details
-                                                <hr />
-                                            </div>
-                                            <div className="row align-items-start">
-                                                <div className='col'>
-                                                    AI Date
-                                                </div>
-                                                <div className='col'>
-                                                    Bull no/Bull id
-                                                </div>
-                                                <div className='col'>
-                                                    Village Name
-                                                </div>
-                                                <div className='col'>
-                                                    Owner name
-                                                </div>
-                                                <div className='col'>
-                                                    Species
-                                                </div>
-                                                <div className='col'>
-                                                    Breed
-                                                </div>
-                                                <div className='col'>
-                                                    Fresh/Repeat
-                                                </div>
-                                            </div>
-                                            <hr />
-                                        </div>
-                                    </div>
-                                </ul>
-                            </div>
-                        </div> : ''}
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="tag-number">Bull ID:</span>
+                    <input type="number" className="form-control" required={true} placeholder="Enter bull id" aria-label="Bull id" aria-describedby="bull-id" value={creds.bullId} name="bullId" disabled />
                 </div>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="tag-number">Village name:</span>
+                    <input type="text" className="form-control" required={true} placeholder="Enter Village name" aria-label="village name" aria-describedby="village-name" value={creds.villageName} name="villageName" disabled />
+                </div>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="tag-number">Owner name:</span>
+                    <input type="text" className="form-control" required={true} placeholder="Enter Owner name" aria-label="Owner name" aria-describedby="owner-name" value={creds.ownerName} name="ownerName" disabled />
+                </div>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="date">AI Date:</span>
+                    <input type="date" className="form-control" required={true} placeholder="ai-date" aria-label="ai-date" aria-describedby="ai-date" value={creds.aiDate} name="aiDate" disabled />
+                </div>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="species">Species:</span>
+                    <input type="text" className="form-control" required={true} placeholder="species" aria-label="species" aria-describedby="species" value={creds.species} name="species" disabled />
+                </div>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="breed">Breed:</span>
+                    <input type="text" className="form-control" required={true} placeholder="breed" aria-label="breed" aria-describedby="breed" value={creds.breed} name="breed" disabled />
+                </div>
+                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" name="freshReports" value={creds.freshReports} disabled>
+                    <option value="">Fresh Reports</option>
+                    <option value="fresh">Fresh</option>
+                    <option value="repeat-r1">Repeat R1</option>
+                    <option value="repeat-r1">Repeat R2</option>
+                </select>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">PD Date:</span>
-                    <input type="date" className="form-control" required={true} placeholder="Tag Number" aria-label="Date" aria-describedby="date" />
+                    <input type="date" className="form-control" required={true} placeholder="PD date" aria-label="Date" aria-describedby="date" onChange={onChange} value={creds.pdDate} name="pdDate" />
                 </div>
-                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example">
-                    <option selected>PD Result</option>
-                    <option value="1">Pregnant</option>
-                    <option value="2">Non Pregnant</option>
-                </select>
-                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-sm example">
-                    <option selected>Breed</option>
-                    <option value="1">One</option>
-                    <option value="2">two</option>
-                    <option value="3">three</option>
+                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" value={creds.pdResult} name="pdResult" onChange={onChange}>
+                    <option>PD Result</option>
+                    <option value="pregnant">Pregnant</option>
+                    <option value="non-pregnant">Non Pregnant</option>
                 </select>
                 <div className="input-group mb-3">
+                    <span className="input-group-text" id="tag-number">PD days:</span>
+                    <input type="number" className="form-control" required={true} placeholder="Pd days" aria-label="pd days" aria-describedby="pd-days" value={creds.pdDays} name="pdDays" disabled />
+                </div>
+                <div className="input-group mb-3">
                     <span className="input-group-text" id="calvings">VD USER ID:</span>
-                    <input type="text" className="form-control" placeholder="Doctor's name" aria-label="doctors-name" aria-describedby="doctors-name" />
+                    <input type="text" className="form-control" placeholder="Doctor's name" aria-label="doctors-name" aria-describedby="doctors-name" name="doctorName" value={creds.doctorName} disabled />
                 </div>
                 <button type="submit" className="btn btn-primary mt-5">Register</button>
             </form>

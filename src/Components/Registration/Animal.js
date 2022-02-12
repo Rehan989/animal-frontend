@@ -41,7 +41,7 @@ const Animal = (props) => {
                 props.setshowAlert("Error", "Search query must be greater than 3 characters")
                 return
             }
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer/${creds.farmerName}/`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer?name=${creds.farmerName}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",

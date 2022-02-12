@@ -143,7 +143,7 @@ const DashboardHome = (props) => {
 
     async function SearchDoctors(name) {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/doctor/${name}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/doctor?name=${name}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
