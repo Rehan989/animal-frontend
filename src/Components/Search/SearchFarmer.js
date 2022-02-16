@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar';
 
 const SearchFarmer = (props) => {
@@ -42,7 +42,7 @@ const SearchFarmer = (props) => {
         props.setshowAlert("Error", "Search query must be greater than 3 characters")
         return
       }
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer/${farmerName}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer?name=${farmerName}`, {
         "method": "GET",
         headers: {
           "Content-Type": "application/json",
@@ -52,20 +52,20 @@ const SearchFarmer = (props) => {
       })
       const data = await response.json()
       if (data.success) {
-        await data.farmers.map(async (farmer) => {
-          let farmerAnimals = await fetchAnimals(farmer.mobileNo);
-          farmer.animals = farmerAnimals;
-          setshowAnimals(true)
-        })
-        setFarmers(data.farmers)
-        console.log(data.farmers)
+        // fetch only if the farmer animals is created
+        // await data.farmers.map(async (farmer) => {
+        //   let farmerAnimals = await fetchAnimals(farmer.mobileNo);
+        //   farmer.animals = farmerAnimals;
+        //   return ""
+        // })
+        setFarmers(data.farmers);
+        setshowFarmers(true);
         if (data.farmers.length === 0) {
-          setshowDataNotFound(true)
+          setshowDataNotFound(true);
           props.setshowAlert("Error", `No Farmers found with the matching name!`)
           return
         }
-        setshowDataNotFound(false)
-        setshowFarmers(true)
+        setshowDataNotFound(false);
       }
       else {
         props.setshowAlert("Error", `${data.error}`)
@@ -80,6 +80,11 @@ const SearchFarmer = (props) => {
       setsearchButtonLoading(false)
     }
   }
+
+  useEffect(() => {
+    console.log(farmers)
+  }, [farmers])
+
 
   return <div>
     <Navbar />
@@ -120,6 +125,7 @@ const SearchFarmer = (props) => {
                       </div>
                       {(farmer.animals.length !== 0 && showAnimals) ?
                         farmer.animals.map(animal => {
+                          console.log(animal._id)
                           if (animal._id)
                             return <div key={`${animal._id}`}>
                               <div className="row align-items-start">
@@ -144,6 +150,8 @@ const SearchFarmer = (props) => {
                               </div>
                               <hr />
                             </div>
+                          else
+                            return ""
                         }) : <h3>No Animals registered</h3>}
                     </div>
                   </div>

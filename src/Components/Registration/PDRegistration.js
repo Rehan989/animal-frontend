@@ -16,7 +16,8 @@ const PDRegistration = (props) => {
         pdDate: "",
         pdResult: "",
         pregnancyDays: "",
-        doctorName: ""
+        doctorName: "",
+        tagNo: ""
     });
 
     const onChange = (e) => {
@@ -29,9 +30,9 @@ const PDRegistration = (props) => {
         }
     }
 
-    const fetchAiDetails = async (tagNo) => {
+    const fetchAiDetails = async (bullid) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/aidetails/${tagNo}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/aidetails?bullid=${bullid}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -183,9 +184,10 @@ const PDRegistration = (props) => {
                 body: JSON.stringify({ ...creds }),
             })
             if (response.status === 204) {
-                props.setshowAlert("Success", 'Ai details created!')
+                props.setshowAlert("Success", 'PD details created!')
                 setCreds({
                     animalTagNo: "",
+                    tagNo: "",
                     bullId: "",
                     villageName: "",
                     ownerName: "",
@@ -196,7 +198,7 @@ const PDRegistration = (props) => {
                     pdDate: "",
                     pdResult: "",
                     pregnancyDays: "",
-                    doctorName: ""
+                    doctorName: "",
                 })
                 return
             }
@@ -223,7 +225,7 @@ const PDRegistration = (props) => {
             <h2 className=''> Register PD Details</h2>
             <form onSubmit={registerPD} className='mt-3'>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Tag number:</span>
+                    <span className="input-group-text" id="tag-number">Tag number of animal:</span>
                     <input type="number" className="form-control" required={true} placeholder="Enter bull Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
                     <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
                 </div>
@@ -257,6 +259,10 @@ const PDRegistration = (props) => {
                     <option value="repeat-r1">Repeat R1</option>
                     <option value="repeat-r1">Repeat R2</option>
                 </select>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="tagNumber">Tag number:</span>
+                    <input type="number" className="form-control" required={true} placeholder="Enter bull id" aria-label="tag-number" aria-describedby="tag-number" value={creds.tagNo} name="tagNo" onChange={onChange} />
+                </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">PD Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="PD date" aria-label="Date" aria-describedby="date" onChange={onChange} value={creds.pdDate} name="pdDate" />
