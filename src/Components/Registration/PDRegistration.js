@@ -233,7 +233,7 @@ const PDRegistration = (props) => {
             <form onSubmit={registerPD} className='mt-3'>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tag-number">Tag number of animal:</span>
-                    <input type="number" className="form-control" required={true} placeholder="Enter bull Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
+                    <input type="number" className="form-control" required={true} placeholder="Enter Animal Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
                     <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
                 </div>
                 <div className="input-group mb-3">
@@ -268,7 +268,7 @@ const PDRegistration = (props) => {
                 </select>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tagNumber">Tag number:</span>
-                    <input type="number" className="form-control" required={true} placeholder="Enter bull id" aria-label="tag-number" aria-describedby="tag-number" value={creds.tagNo} name="tagNo" onChange={onChange} />
+                    <input type="number" className="form-control" required={true} placeholder="Enter unique tag number for pd details" aria-label="tag-number" aria-describedby="tag-number" value={creds.tagNo} name="tagNo" onChange={onChange} />
                 </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">PD Date:</span>

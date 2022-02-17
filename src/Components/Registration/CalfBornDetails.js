@@ -33,9 +33,9 @@ const CalfBornDetails = (props) => {
         }
     }
 
-    const fetchAiDetails = async (bullid) => {
+    const fetchAiDetails = async (tagno) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/aidetails?bullid=${bullid}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/aidetails?tagno=${tagno}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -45,6 +45,10 @@ const CalfBornDetails = (props) => {
             })
             const data = await response.json()
             if (data.success) {
+                if (!data.aidetails) {
+                    props.setshowAlert("Error", "No ai details with the bull account is registered!");
+                    return false
+                }
                 return data.aidetails.date
             }
             else {
@@ -70,7 +74,10 @@ const CalfBornDetails = (props) => {
             })
             const data = await response.json();
             if (data.success && data.pregnancyDetails) {
-                let aiDate = await fetchAiDetails(data.pregnancyDetails.bullId);
+                let aiDate = await fetchAiDetails(data.pregnancyDetails.animalTagNo);
+                if (!aiDate) {
+                    return
+                }
                 setCreds({
                     ...creds,
                     animalTagNo: tagNo,
@@ -156,7 +163,7 @@ const CalfBornDetails = (props) => {
             <form onSubmit={handleCalfBornDetailsRegistration} className='mt-3'>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tag-number">Tag number:</span>
-                    <input type="number" className="form-control" required={true} placeholder="Enter bull Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
+                    <input type="number" className="form-control" required={true} placeholder="Enter Pd details Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
                     <button onClick={() => fetchPDDetails(tagNo)} type='button' className='btn btn-primary'>Search</button>
                 </div>
                 <div className="input-group mb-3">

@@ -5,8 +5,7 @@ const AiDetails = (props) => {
     const [creds, setCreds] = useState({
         bullId: "",
         date: "",
-        freshReports: "",
-        animalTagNo: ""
+        freshReports: ""
     });
 
     const onChange = (e) => {
@@ -31,8 +30,7 @@ const AiDetails = (props) => {
                 setCreds({
                     bullId: "",
                     date: "",
-                    freshReports: "",
-                    animalTagNo: ""
+                    freshReports: ""
                 })
                 return
             }
@@ -64,10 +62,6 @@ const AiDetails = (props) => {
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="bull-id">Bull id:</span>
                     <input type="text" className="form-control" required={true} placeholder="Bull Id" aria-label="Bull Id" aria-describedby="bull-id" name="bullId" value={creds.bullId} onChange={onChange} />
-                </div>
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Animal tag number:</span>
-                    <input type="text" className="form-control" required={true} placeholder="Animal Tag number" aria-label="Bull Id" aria-describedby="tag-number" name="animalTagNo" value={creds.animalTagNo} onChange={onChange} />
                 </div>
                 <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" name="freshReports" value={creds.freshReports} onChange={onChange} >
                     <option value="">Fresh Reports</option>
