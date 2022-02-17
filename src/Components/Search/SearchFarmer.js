@@ -1,38 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../Navbar';
 
 const SearchFarmer = (props) => {
   const [farmerName, setFarmerName] = useState("");
   const [farmers, setFarmers] = useState([]);
   const [showFarmers, setshowFarmers] = useState(false);
-  const [showAnimals, setshowAnimals] = useState(false);
   const [showDataNotFound, setshowDataNotFound] = useState(false);
   const [searchButtonLoading, setsearchButtonLoading] = useState(false)
-
-  const fetchAnimals = async (farmerId) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/animals?farmerid=${farmerId}`, {
-        "method": "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Accept': 'application/json',
-          'auth-token': `${localStorage.getItem('auth_token')}`
-        },
-      })
-      const data = await response.json()
-      if (data.success) {
-        return data.animals
-      }
-      else {
-        props.setshowAlert("Error", `${data.error}`)
-        return
-      }
-    }
-    catch (error) {
-      console.log(error);
-      props.setshowAlert("Error", "Internal Server Error")
-    }
-  }
 
   const searchFarmer = async (e) => {
     e.preventDefault();
@@ -52,20 +26,14 @@ const SearchFarmer = (props) => {
       })
       const data = await response.json()
       if (data.success) {
-        // fetch only if the farmer animals is created
-        // await data.farmers.map(async (farmer) => {
-        //   let farmerAnimals = await fetchAnimals(farmer.mobileNo);
-        //   farmer.animals = farmerAnimals;
-        //   return ""
-        // })
-        setFarmers(data.farmers);
-        setshowFarmers(true);
+        setFarmers(data.farmers)
         if (data.farmers.length === 0) {
-          setshowDataNotFound(true);
+          setshowDataNotFound(true)
           props.setshowAlert("Error", `No Farmers found with the matching name!`)
           return
         }
-        setshowDataNotFound(false);
+        setshowDataNotFound(false)
+        setshowFarmers(true)
       }
       else {
         props.setshowAlert("Error", `${data.error}`)
@@ -80,10 +48,6 @@ const SearchFarmer = (props) => {
       setsearchButtonLoading(false)
     }
   }
-
-  useEffect(() => {
-    console.log(farmers)
-  }, [farmers])
 
 
   return <div>
@@ -123,7 +87,7 @@ const SearchFarmer = (props) => {
                         Animal registered
                         <hr />
                       </div>
-                      {(farmer.animals.length !== 0 && showAnimals) ?
+                      {(farmer.animals.length !== 0) ?
                         farmer.animals.map(animal => {
                           console.log(animal._id)
                           if (animal._id)
