@@ -155,7 +155,7 @@ const Animal = (props) => {
                     </select> : ''}
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tag-number">Tag number:</span>
-                    <input type="text" className="form-control" required={true} placeholder="Tag Number" aria-label="Full name" aria-describedby="tag-number" name="tagNumber" value={creds.tagNumber} onChange={onChange} minLength={3} />
+                    <input type="text" className="form-control" required={true} placeholder="Tag Number" aria-label="Full name" aria-describedby="tag-number" name="tagNumber" value={creds.tagNumber} onChange={onChange} />
                 </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">Date:</span>

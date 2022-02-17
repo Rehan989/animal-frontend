@@ -30,9 +30,9 @@ const PDRegistration = (props) => {
         }
     }
 
-    const fetchAiDetails = async (bullid) => {
+    const fetchAiDetails = async (tagno) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/aidetails?bullid=${bullid}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/aidetails?tagno=${tagno}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -42,6 +42,10 @@ const PDRegistration = (props) => {
             })
             const data = await response.json()
             if (data.success) {
+                if (!data.aidetails) {
+                    props.setshowAlert("Error", "No ai details with the bull account is registered!");
+                    return false
+                }
                 return data.aidetails
             }
             else {
@@ -133,6 +137,9 @@ const PDRegistration = (props) => {
             setCreds({ ...creds, animalTagNo: tagNo });
 
             let aidetails = await fetchAiDetails(tagno);
+            if (!aidetails) {
+                return
+            }
 
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/animals?tagno=${tagno}`, {
                 "method": "GET",

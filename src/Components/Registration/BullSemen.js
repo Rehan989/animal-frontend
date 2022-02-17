@@ -8,7 +8,8 @@ const BullSemen = (props) => {
     species: "",
     breed: "",
     bullId: "",
-    noOfDoses: ""
+    noOfDoses: "",
+    animalTagNo: ""
   });
 
   const [Species, setSpecies] = useState([]);
@@ -33,20 +34,21 @@ const BullSemen = (props) => {
         }),
       })
       if (response.status === 204) {
-        props.setshowAlert("Success", 'Animal data Created Successfully!')
+        props.setshowAlert("Success", 'Bull semen data Created Successfully!')
         setCreds({
           bullNo: "",
           date: "",
           species: "",
           breed: "",
           bullId: "",
-          noOfDoses: ""
+          noOfDoses: "",
+          animalTagNo: ""
         })
         return
       }
       const data = await response.json();
       if (Array.isArray(data.errors)) {
-        props.setshowAlert("Error", data.errors[0])
+        props.setshowAlert("Error", data.errors[0].msg)
         return
       }
       if (data.error) {
@@ -131,6 +133,10 @@ const BullSemen = (props) => {
           <span className="input-group-text" id="no-of-doses">No of Doses:</span>
           <input type="text" className="form-control" required={true} placeholder="Number of doses" aria-label="no-of-doses" aria-describedby="no-of-doses" name="noOfDoses" value={creds.noOfDoses}
             onChange={onChange} />
+        </div>
+        <div className="input-group mb-3">
+          <span className="input-group-text" id="tag-number">Animal tag number:</span>
+          <input type="text" className="form-control" required={true} placeholder="Animal Tag number" aria-label="Bull Id" aria-describedby="tag-number" name="animalTagNo" value={creds.animalTagNo} onChange={onChange} />
         </div>
         <button type="submit" className="btn btn-primary mt-5">Save</button>
       </form>
