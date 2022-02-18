@@ -6,7 +6,7 @@ const SearchFarmer = (props) => {
   const [farmers, setFarmers] = useState([]);
   const [showFarmers, setshowFarmers] = useState(false);
   const [showDataNotFound, setshowDataNotFound] = useState(false);
-  const [searchButtonLoading, setsearchButtonLoading] = useState(false)
+  const [searchButtonLoading, setsearchButtonLoading] = useState(false);
 
   const searchFarmer = async (e) => {
     e.preventDefault();

@@ -54,7 +54,6 @@ const Farmer = (props) => {
                     break
                 case "3":
                     userGender = "transgender"
-                    console.log("youtube");
                     break
                 default:
                     props.setshowAlert("Error", "Please select a gender")

@@ -19,6 +19,7 @@ const PDRegistration = (props) => {
         doctorName: "",
         tagNo: ""
     });
+    const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
     const onChange = (e) => {
         if (e.target.name === "pdDate" && creds.aiDate !== "") {
@@ -180,6 +181,7 @@ const PDRegistration = (props) => {
 
     const registerPD = async (e) => {
         e.preventDefault();
+        setsubmitButtonLoading(true)
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/register/pd/`, {
                 "method": "POST",
@@ -222,6 +224,9 @@ const PDRegistration = (props) => {
         catch (error) {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
+        }
+        finally {
+            setsubmitButtonLoading(false);
         }
     }
 
@@ -287,7 +292,7 @@ const PDRegistration = (props) => {
                     <span className="input-group-text" id="calvings">VD USER ID:</span>
                     <input type="text" className="form-control" placeholder="Doctor's name" aria-label="doctors-name" aria-describedby="doctors-name" name="doctorName" value={creds.doctorName} disabled />
                 </div>
-                <button type="submit" className="btn btn-primary mt-5">Register</button>
+                <button type="submit" className="btn btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Submitting...' : 'Submit'}</button>
             </form>
         </div>
     </div>;

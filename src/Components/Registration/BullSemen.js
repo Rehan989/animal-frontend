@@ -14,6 +14,7 @@ const BullSemen = (props) => {
 
   const [Species, setSpecies] = useState([]);
   const [SpeciesLoading, setSpeciesLoading] = useState(true);
+  const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
   const onChange = (e) => {
     setCreds({ ...creds, [e.target.name]: e.target.value });
@@ -21,6 +22,7 @@ const BullSemen = (props) => {
 
   const handleBullSemenAccountRegistration = async (e) => {
     e.preventDefault();
+    setsubmitButtonLoading(true)
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/register/bullsemen/`, {
         "method": "POST",
@@ -59,6 +61,9 @@ const BullSemen = (props) => {
     catch (error) {
       console.log(error);
       props.setshowAlert("Error", "Internal Server Error")
+    }
+    finally {
+      setsubmitButtonLoading(false);
     }
   }
 
@@ -138,7 +143,7 @@ const BullSemen = (props) => {
           <span className="input-group-text" id="tag-number">Animal tag number:</span>
           <input type="text" className="form-control" required={true} placeholder="Animal Tag number" aria-label="Bull Id" aria-describedby="tag-number" name="animalTagNo" value={creds.animalTagNo} onChange={onChange} />
         </div>
-        <button type="submit" className="btn btn-primary mt-5">Save</button>
+        <button type="submit" className="btn btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Saving...' : 'Save'}</button>
       </form>
     </div>
   </div>;

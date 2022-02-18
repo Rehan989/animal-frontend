@@ -50,7 +50,6 @@ const Animal = (props) => {
                 },
             })
             const data = await response.json()
-            console.log(data);
             if (data.success) {
                 setFarmers(data.farmers)
                 if (data.farmers.length === 0) {

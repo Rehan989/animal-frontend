@@ -7,6 +7,7 @@ const AiDetails = (props) => {
         date: "",
         freshReports: ""
     });
+    const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
     const onChange = (e) => {
         setCreds({ ...creds, [e.target.name]: e.target.value });
@@ -14,7 +15,7 @@ const AiDetails = (props) => {
 
     const handleAiDetailsSubmit = async (e) => {
         e.preventDefault()
-        console.log(creds)
+        setsubmitButtonLoading(true)
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/register/aidetails/`, {
                 "method": "POST",
@@ -48,6 +49,9 @@ const AiDetails = (props) => {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
         }
+        finally {
+            setsubmitButtonLoading(false);
+        }
     }
 
     return <div>
@@ -69,7 +73,7 @@ const AiDetails = (props) => {
                     <option value="repeat-r1">Repeat R1</option>
                     <option value="repeat-r1">Repeat R2</option>
                 </select>
-                <button type="submit" className="btn btn-primary mt-5">Save</button>
+                <button type="submit" className="btn btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Saving...' : 'Save'}</button>
             </form>
         </div>
     </div>;

@@ -19,6 +19,7 @@ const CalfBornDetails = (props) => {
         freshReports: "",
         pdDate: ""
     })
+    const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
     const onChange = (e) => {
         if (e.target.name === "calfBornDate" && creds.aiDate !== "") {
@@ -107,6 +108,7 @@ const CalfBornDetails = (props) => {
 
     const handleCalfBornDetailsRegistration = async (e) => {
         e.preventDefault();
+        setsubmitButtonLoading(true)
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/register/calf-details/`, {
                 "method": "POST",
@@ -151,6 +153,9 @@ const CalfBornDetails = (props) => {
         catch (error) {
             console.log(error);
             props.setshowAlert("Error", "Internal Server Error")
+        }
+        finally {
+            setsubmitButtonLoading(false);
         }
     }
 
@@ -219,7 +224,7 @@ const CalfBornDetails = (props) => {
                     <span className="input-group-text" id="gestation-days">Gestation Days:</span>
                     <input type="text" className="form-control" required={true} placeholder="Automatic (Calf born date-recent-ai date)" aria-label="gestation-days" aria-describedby="gestation-days" name="gestationDays" value={creds.gestationDays} disabled />
                 </div>
-                <button type="submit" className="btn btn-primary mt-5">Save</button>
+                <button type="submit" className="btn btn-primary my-3" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Saving...' : 'Save'}</button>
             </form>
         </div>
     </div>;
