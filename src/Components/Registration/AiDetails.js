@@ -5,7 +5,8 @@ const AiDetails = (props) => {
     const [creds, setCreds] = useState({
         bullId: "",
         date: "",
-        freshReports: ""
+        freshReports: "",
+        tagNo: "",
     });
     const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
@@ -31,7 +32,8 @@ const AiDetails = (props) => {
                 setCreds({
                     bullId: "",
                     date: "",
-                    freshReports: ""
+                    freshReports: "",
+                    tagNo: ""
                 })
                 return
             }
@@ -59,6 +61,10 @@ const AiDetails = (props) => {
         <div className='container mt-5'>
             <h2 className=''> AI Details</h2>
             <form className='mt-3' onSubmit={handleAiDetailsSubmit}>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="tag-number">Tag number:</span>
+                    <input type="text" className="form-control" required={true} placeholder="Tag number" aria-label="tag-number" aria-describedby="tag-number" name="tagNo" value={creds.tagNo} onChange={onChange} />
+                </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="Tag Number" aria-label="Date" aria-describedby="date" name="date" value={creds.date} onChange={onChange} />

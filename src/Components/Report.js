@@ -13,6 +13,7 @@ const Report = (props) => {
     periodFrom: "",
     periodTo: ""
   });
+  const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
   const onChange = (e) => {
     setCreds({ ...creds, [e.target.name]: e.target.value });
@@ -39,7 +40,8 @@ const Report = (props) => {
   }
 
   const generateReport = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setsubmitButtonLoading(true)
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/report/${localStorage.getItem('user_type')}/${creds.reportType}/`, {
         "method": "POST",
@@ -60,6 +62,9 @@ const Report = (props) => {
       console.log(error);
       props.setshowAlert("Error", "Internal Server Error")
       return
+    }
+    finally {
+      setsubmitButtonLoading(false)
     }
   }
 
@@ -129,9 +134,7 @@ const Report = (props) => {
             <input type="date" className="form-control" required={true} placeholder="Period to" aria-label="Date" aria-describedby="date"
               value={creds.periodTo} name="periodTo" onChange={onChange} />
           </div>
-          <button type='submit' className='btn btn-primary'>
-            Generate Report
-          </button>
+          <button type="submit" className="btn mt-3 btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Generating...' : 'Generate Report'}</button>
         </form>
       </div>
     </div>)
