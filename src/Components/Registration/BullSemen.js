@@ -9,7 +9,6 @@ const BullSemen = (props) => {
     breed: "",
     bullId: "",
     noOfDoses: "",
-    animalTagNo: ""
   });
 
   const [Species, setSpecies] = useState([]);
@@ -44,7 +43,6 @@ const BullSemen = (props) => {
           breed: "",
           bullId: "",
           noOfDoses: "",
-          animalTagNo: ""
         })
         return
       }
@@ -138,10 +136,6 @@ const BullSemen = (props) => {
           <span className="input-group-text" id="no-of-doses">No of Doses:</span>
           <input type="text" className="form-control" required={true} placeholder="Number of doses" aria-label="no-of-doses" aria-describedby="no-of-doses" name="noOfDoses" value={creds.noOfDoses}
             onChange={onChange} />
-        </div>
-        <div className="input-group mb-3">
-          <span className="input-group-text" id="tag-number">Animal tag number:</span>
-          <input type="text" className="form-control" required={true} placeholder="Animal Tag number" aria-label="Bull Id" aria-describedby="tag-number" name="animalTagNo" value={creds.animalTagNo} onChange={onChange} />
         </div>
         <button type="submit" className="btn btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Saving...' : 'Save'}</button>
       </form>
