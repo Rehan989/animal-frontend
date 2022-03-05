@@ -6,7 +6,7 @@ const AiDetails = (props) => {
         bullId: "",
         date: "",
         freshReports: "",
-        tagNo: "",
+        animalTagNo: "",
     });
     const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
@@ -33,7 +33,7 @@ const AiDetails = (props) => {
                     bullId: "",
                     date: "",
                     freshReports: "",
-                    tagNo: ""
+                    animalTagNo: ""
                 })
                 return
             }
@@ -62,8 +62,8 @@ const AiDetails = (props) => {
             <h2 className=''> AI Details</h2>
             <form className='mt-3' onSubmit={handleAiDetailsSubmit}>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Tag number:</span>
-                    <input type="text" className="form-control" required={true} placeholder="Tag number" aria-label="tag-number" aria-describedby="tag-number" name="tagNo" value={creds.tagNo} onChange={onChange} />
+                    <span className="input-group-text" id="tag-number">Animal Tag number:</span>
+                    <input type="text" className="form-control" required={true} placeholder="Tag number" aria-label="tag-number" aria-describedby="tag-number" name="animalTagNo" value={creds.animalTagNo} onChange={onChange} />
                 </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">Date:</span>

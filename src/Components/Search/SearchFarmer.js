@@ -97,7 +97,7 @@ const SearchFarmer = (props) => {
                                   {animal.tagNo}
                                 </div>
                                 <div className='col'>
-                                  {animal.date}
+                                  {animal.date.substring(0, 10)}
                                 </div>
                                 <div className='col'>
                                   {animal.species}

@@ -16,8 +16,7 @@ const PDRegistration = (props) => {
         pdDate: "",
         pdResult: "",
         pregnancyDays: "",
-        doctorName: "",
-        tagNo: ""
+        doctorName: ""
     });
     const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
@@ -196,7 +195,6 @@ const PDRegistration = (props) => {
                 props.setshowAlert("Success", 'PD details created!')
                 setCreds({
                     animalTagNo: "",
-                    tagNo: "",
                     bullId: "",
                     villageName: "",
                     ownerName: "",
@@ -271,10 +269,6 @@ const PDRegistration = (props) => {
                     <option value="repeat-r1">Repeat R1</option>
                     <option value="repeat-r1">Repeat R2</option>
                 </select>
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="tagNumber">Tag number:</span>
-                    <input type="number" className="form-control" required={true} placeholder="Enter unique tag number for pd details" aria-label="tag-number" aria-describedby="tag-number" value={creds.tagNo} name="tagNo" onChange={onChange} />
-                </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">PD Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="PD date" aria-label="Date" aria-describedby="date" onChange={onChange} value={creds.pdDate} name="pdDate" />

@@ -11,13 +11,11 @@ const CalfBornDetails = (props) => {
         easeOfCalvings: "",
         tagNo: "",
         gestationDays: "",
-        bullId: "",
         villageName: "",
         ownerName: "",
         breed: "",
         species: "",
         freshReports: "",
-        pdDate: ""
     })
     const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
 
@@ -50,7 +48,7 @@ const CalfBornDetails = (props) => {
                     props.setshowAlert("Error", "No ai details with the bull account is registered!");
                     return false
                 }
-                return data.aidetails.date
+                return data.aidetails
             }
             else {
                 props.setshowAlert("Error", `${data.error}`)
@@ -63,9 +61,32 @@ const CalfBornDetails = (props) => {
         }
     }
 
-    const fetchPDDetails = async (tagNo) => {
+    const fetchTechnician = async (auth_token, userType) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/pdDetails/${tagNo}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/user/${userType}`, {
+                "method": "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${auth_token}`
+                },
+            })
+            const data = await response.json()
+            if (data.email) {
+                return data
+            }
+            props.setshowAlert("Error", "Invalid credentials!")
+            return
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
+
+    const fetchDoctor = async (doctor_id) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/doctor?email=${doctor_id}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -73,26 +94,82 @@ const CalfBornDetails = (props) => {
                     'auth-token': `${localStorage.getItem('auth_token')}`
                 },
             })
-            const data = await response.json();
-            if (data.success && data.pregnancyDetails) {
-                let aiDate = await fetchAiDetails(data.pregnancyDetails.animalTagNo);
-                if (!aiDate) {
-                    return
-                }
+            const data = await response.json()
+            if (data.success) {
+                return data.doctor
+            }
+            else {
+                props.setshowAlert("Error", `${data.error}`)
+                return
+            }
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
+
+    const fetchFarmer = async (farmerPhoneNumber) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer?phone=${farmerPhoneNumber}`, {
+                "method": "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${localStorage.getItem('auth_token')}`
+                },
+            })
+            const data = await response.json()
+            if (data.success) {
+                return data.farmerUser
+            }
+            else {
+                props.setshowAlert("Error", `${data.error}`)
+                return
+            }
+        }
+        catch (error) {
+            console.log(error);
+            props.setshowAlert("Error", "Internal Server Error")
+        }
+    }
+
+    const searchAnimal = async (tagno) => {
+        try {
+            setCreds({ ...creds, animalTagNo: tagno });
+            console.log(tagno)
+
+            let aidetails = await fetchAiDetails(tagno);
+            console.log(aidetails)
+            if (!aidetails) {
+                return
+            }
+
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/animals?tagno=${tagno}`, {
+                "method": "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json',
+                    'auth-token': `${localStorage.getItem('auth_token')}`
+                },
+            })
+            const data = await response.json()
+            if (data.success && data.animals) {
+                let farmerDetails = await fetchFarmer(data.animals.farmerId);
+                let techncianUser = await fetchTechnician(localStorage.getItem('auth_token'), localStorage.getItem('user_type'))
+                let doctorDetails = await fetchDoctor(techncianUser.doctor);
+                console.log(aidetails)
                 setCreds({
                     ...creds,
-                    animalTagNo: tagNo,
-                    aiDate: aiDate,
-                    breed: data.pregnancyDetails.breed,
-                    species: data.pregnancyDetails.species,
-                    freshReports: data.pregnancyDetails.freshReports,
-                    bullId: data.pregnancyDetails.bullId,
-                    villageName: data.pregnancyDetails.villageName,
-                    ownerName: data.pregnancyDetails.ownerName,
-                    pdDate: data.pregnancyDetails.date.substring(0, 10)
+                    animalTagNo: tagno,
+                    breed: data.animals.breed, species: data.animals.species, freshReports: aidetails.freshReports, aiDate: aidetails.date.substring(0, 10),
+                    villageName: farmerDetails.village, ownerName: farmerDetails.name, doctorName: doctorDetails.name
                 });
+                if (!data.animals) {
+                    props.setshowAlert("Error", "No bull found with the specific tag Number")
+                }
             }
-            else if (!data.pregnancyDetails) {
+            else if (!data.animals) {
                 props.setshowAlert("Error", `No details found with the corresponding tag number!`)
             }
             else {
@@ -130,13 +207,11 @@ const CalfBornDetails = (props) => {
                     easeOfCalvings: "",
                     tagNo: "",
                     gestationDays: "",
-                    bullId: "",
                     villageName: "",
                     ownerName: "",
                     breed: "",
                     species: "",
                     freshReports: "",
-                    pdDate: ""
                 })
                 return
             }
@@ -168,12 +243,8 @@ const CalfBornDetails = (props) => {
             <form onSubmit={handleCalfBornDetailsRegistration} className='mt-3'>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tag-number">Tag number:</span>
-                    <input type="number" className="form-control" required={true} placeholder="Enter Pd details Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
-                    <button onClick={() => fetchPDDetails(tagNo)} type='button' className='btn btn-primary'>Search</button>
-                </div>
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Bull ID:</span>
-                    <input type="number" className="form-control" required={true} placeholder="Enter bull id" aria-label="Bull id" aria-describedby="bull-id" value={creds.bullId} name="bullId" disabled />
+                    <input type="number" className="form-control" required={true} placeholder="Enter animal Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
+                    <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
                 </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tag-number">Village name:</span>
@@ -197,10 +268,6 @@ const CalfBornDetails = (props) => {
                     <option value="repeat-r1">Repeat R1</option>
                     <option value="repeat-r1">Repeat R2</option>
                 </select>
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="date">PD Date:</span>
-                    <input type="date" className="form-control" required={true} placeholder="PD date" aria-label="Date" aria-describedby="date" onChange={onChange} value={creds.pdDate} name="pdDate" disabled />
-                </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="date">Calf Born Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="Calf Born Date" aria-label="calf-born-date" aria-describedby="calf-born-date" name="calfBornDate" value={creds.calfBornDate} onChange={onChange} />
