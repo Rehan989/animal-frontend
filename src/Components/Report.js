@@ -88,9 +88,9 @@ const Report = (props) => {
             <option value="pd">PD report</option>
             <option value="calf-born">Calf-born Report</option>
           </select>
-          <select onChange={(e) => { setDistrict(e.target.value); setTaluka("") }
-          } className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example">
-            <option value={""}>Select District</option>
+          <select required={(localStorage.getItem('user_type') === 'doctor') ? false : true} onChange={(e) => { setDistrict(e.target.value); setTaluka("") }
+          } className="form-select form-select mb-3" aria-label=".form-select-lg example">
+            <option value={""}>{(localStorage.getItem('user_type') === 'doctor') ? `All villages` : 'Select district'}</option>
             {
               (!VillagesLoading) ?
 
