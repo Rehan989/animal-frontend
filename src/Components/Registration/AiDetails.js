@@ -9,10 +9,27 @@ const AiDetails = (props) => {
         animalTagNo: "",
     });
     const [submitButtonLoading, setsubmitButtonLoading] = useState(false);
+    const [bullAccounts, setBullAccounts] = useState([])
+    const [showBullAccounts, setShowBullAccounts] = useState(false)
 
     const onChange = (e) => {
         setCreds({ ...creds, [e.target.name]: e.target.value });
     }
+
+    const fetchBullAccounts = async () => {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/bull/`, {
+            "method": "GET",
+            headers: {
+                "Content-Type": "application/json",
+                'Accept': 'application/json',
+                'auth-token': `${localStorage.getItem('auth_token')}`
+            }
+        })
+        const data = await response.json()
+        setBullAccounts(data.bullAccounts);
+        setShowBullAccounts(true);
+    }
+
 
     const handleAiDetailsSubmit = async (e) => {
         e.preventDefault()
@@ -56,6 +73,14 @@ const AiDetails = (props) => {
         }
     }
 
+    React.useEffect(() => {
+        const fetchData = async () => {
+            await fetchBullAccounts();
+        }
+        fetchData();
+
+    }, []);
+
     return <div>
         <Navbar />
         <div className='container mt-5'>
@@ -69,10 +94,15 @@ const AiDetails = (props) => {
                     <span className="input-group-text" id="date">Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="Tag Number" aria-label="Date" aria-describedby="date" name="date" value={creds.date} onChange={onChange} />
                 </div>
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="bull-id">Bull id:</span>
-                    <input type="text" className="form-control" required={true} placeholder="Bull Id" aria-label="Bull Id" aria-describedby="bull-id" name="bullId" value={creds.bullId} onChange={onChange} />
-                </div>
+                {(showBullAccounts) ?
+                    <select className="form-select form-select mb-3" required={true} name="bullId" value={creds.bullId} onChange={onChange} aria-label=".form-select example">
+                        <option value={""}>Select Bull Account</option>
+                        {
+                            bullAccounts.map(function (bull) {
+                                return <option key={bull.bullId} value={`${bull.bullId}`}>{bull.bullId}</option>
+                            })
+                        }
+                    </select> : ''}
                 <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" name="freshReports" value={creds.freshReports} onChange={onChange} >
                     <option value="">Fresh Reports</option>
                     <option value="fresh">Fresh</option>
