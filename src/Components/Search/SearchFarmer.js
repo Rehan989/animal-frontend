@@ -7,6 +7,7 @@ const SearchFarmer = (props) => {
   const [showFarmers, setshowFarmers] = useState(false);
   const [showDataNotFound, setshowDataNotFound] = useState(false);
   const [searchButtonLoading, setsearchButtonLoading] = useState(false);
+  const [searchType, setSearchType] = useState("Search By")
 
   const searchFarmer = async (e) => {
     e.preventDefault();
@@ -57,10 +58,23 @@ const SearchFarmer = (props) => {
         Search Farmer
       </h1>
 
+
       <form onSubmit={searchFarmer}>
         <div className="input-group mb-3">
-          <span className="input-group-text" id="basic-addon1">Enter name of the farmer</span>
-          <input value={farmerName} onChange={(e) => setFarmerName(e.target.value)} type="text" className="form-control" placeholder="name" aria-label="Username" aria-describedby="basic-addon1" />
+          {/* search by field */}
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="searchby" data-bs-toggle="dropdown" aria-expanded="false">
+              {searchType}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <li><button class="dropdown-item" type="button" onClick={() => setSearchType("Name")}>Farmer's Name</button></li>
+              <li><button class="dropdown-item" type="button" onClick={() => setSearchType("FarmerTagNo")}>Farmer's Tag Number</button></li>
+              <li><button class="dropdown-item" type="button" onClick={() => setSearchType("AnimalTagNo")}>Animal's Tag Number</button></li>
+            </ul>
+          </div>
+          <input value={farmerName} onChange={(e) => setFarmerName(e.target.value)} type="text" className="form-control" placeholder={searchType} aria-label="Username" aria-describedby="basic-addon1" />
+
+
           <button type="submit" className="btn btn-primary" disabled={(searchButtonLoading) ? true : false}>{(searchButtonLoading) ? 'Submitting...' : 'Submit'}</button>
         </div>
       </form>

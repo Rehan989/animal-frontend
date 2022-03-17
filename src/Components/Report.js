@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import { saveAs } from 'file-saver';
+import { useNavigate } from 'react-router-dom';
 
 const Report = (props) => {
+  let navigate = useNavigate();
   const [Villages, setVillages] = useState({});
   const [VillagesLoading, setVillagesLoading] = useState(true);
   const [district, setDistrict] = useState("");
   const [taluka, setTaluka] = useState("");
+  const [user, setUser] = useState({ name: "" })
   const [creds, setCreds] = useState({
     reportType: "",
     village: "",
@@ -18,6 +21,40 @@ const Report = (props) => {
   const onChange = (e) => {
     setCreds({ ...creds, [e.target.name]: e.target.value });
   }
+
+  async function fetchTechnician(auth_token, userType) {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/user/${userType}`, {
+        "method": "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json',
+          'auth-token': `${auth_token}`
+        },
+      })
+      const data = await response.json()
+      if (!data.email) {
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('user_type')
+        navigate('/')
+        props.setshowAlert("Error", "Invalid credentials!")
+        return
+      }
+      if (data.email) {
+        setUser(data)
+      }
+      if (data.user_type === 'admin') {
+        navigate('/dashboard')
+      }
+    }
+    catch (error) {
+      navigate('/');
+      localStorage.clear()
+      console.log(error);
+      props.setshowAlert("Error", "Internal Server Error")
+    }
+  }
+
 
   const fetchVillages = async () => {
     try {
@@ -56,7 +93,7 @@ const Report = (props) => {
       })
       const data = await response.json();
       let blob = new Blob([`${data.report_csv.header}`, `${data.report_csv.body}`], { type: "text/csv;charset=utf-8" })
-      saveAs(blob, "data.csv");
+      saveAs(blob, `${creds.reportType}_${user.name}_${creds.periodFrom}-${creds.periodTo}.csv`);
     }
     catch (error) {
       console.log(error);
@@ -71,6 +108,7 @@ const Report = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       await fetchVillages();
+      await fetchTechnician(localStorage.getItem('auth_token'), localStorage.getItem('user_type'));
     }
     fetchData();
 
