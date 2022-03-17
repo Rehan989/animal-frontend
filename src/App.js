@@ -14,6 +14,7 @@ import Dashboard from './Components/Dashboard';
 import DashboardHome from './Components/DashboardHome';
 import { useState } from 'react';
 import Logout from './Components/Logout';
+import './App.css'
 
 function App() {
   const [showAlert, setshowAlert] = useState(false);

@@ -92,14 +92,14 @@ const BullSemen = (props) => {
       <h2 className=''> Create Bull Semen Account</h2>
       <form className='mt-3' onSubmit={handleBullSemenAccountRegistration}>
         <div className="input-group mb-3">
-          <span className="input-group-text" id="bull-number">Bull no:</span>
+          <span className="input-group-text input-group-required-text" id="bull-number">Bull no:</span>
           <input type="text" className="form-control" onChange={onChange} name="bullNo" value={creds.bullNo} required={true} placeholder="Bull Number" aria-label="Bull Number" aria-describedby="bull-number" />
         </div>
         <div className="input-group mb-3">
-          <span className="input-group-text" id="bull-id">Bull id:</span>
+          <span className="input-group-text input-group-required-text" id="bull-id">Bull id:</span>
           <input type="text" name="bullId" value={creds.bullId} onChange={onChange} className="form-control" required={true} placeholder="Bull Id" aria-label="Bull Id" aria-describedby="bull-id" />
         </div>
-        <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" name="species" value={creds.species} onChange={onChange}>
+        <select className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example" name="species" value={creds.species} onChange={onChange}>
           <option value="">Species</option>
           {
             (!SpeciesLoading) ?
@@ -113,7 +113,7 @@ const BullSemen = (props) => {
           }
         </select>
         {(creds.species !== "") ?
-          <select className="form-select form-select mb-3" required={true} aria-label=".form-select-sm example" name="breed" value={creds.breed} onChange={onChange}>
+          <select className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-sm example" name="breed" value={creds.breed} onChange={onChange}>
             <option value="">Breed</option>
             {
               (!SpeciesLoading) ?
@@ -128,11 +128,11 @@ const BullSemen = (props) => {
           </select>
           : ''}
         <div className="input-group mb-3">
-          <span className="input-group-text" id="date">Date:</span>
+          <span className="input-group-text input-group-required-text" id="date">Date:</span>
           <input type="date" className="form-control" required={true} placeholder="Tag Number" aria-label="Date" aria-describedby="date" name="date" value={creds.date}
             onChange={onChange} />
         </div>
-        <div className="input-group mb-3">
+        <div className="input-group mb-3 input-group-required-text">
           <span className="input-group-text" id="no-of-doses">No of Doses:</span>
           <input type="text" className="form-control" required={true} placeholder="Number of doses" aria-label="no-of-doses" aria-describedby="no-of-doses" name="noOfDoses" value={creds.noOfDoses}
             onChange={onChange} />

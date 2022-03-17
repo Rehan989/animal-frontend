@@ -121,11 +121,11 @@ const Farmer = (props) => {
             <h2 className=''> Register Farmer</h2>
             <form onSubmit={registerFarmer} className='mt-3'>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="name">Name:</span>
+                    <span className="input-group-text input-group-required-text" id="name">Name: </span>
                     <input type="text" name="name" className="form-control" required={true} placeholder="Full name" aria-label="Full name" aria-describedby="name" minLength={3} value={creds.name} onChange={onChange} />
                 </div>
                 <select onChange={(e) => { setDistrict(e.target.value); setTaluka("") }
-                } className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example">
+                } className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example">
                     <option value={""}>Select District</option>
                     {
                         (!VillagesLoading) ?
@@ -142,7 +142,7 @@ const Farmer = (props) => {
                 </select>
                 {(!VillagesLoading && district !== "") ?
                     <select onChange={(e) => setTaluka(e.target.value)
-                    } className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example">
+                    } className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example">
                         <option value={""}>Select Taluka</option>
                         {
                             Object.keys(Villages.villages[district]).map(taluka => {
@@ -153,7 +153,7 @@ const Farmer = (props) => {
                         }
                     </select> : ''}
                 {(!VillagesLoading && taluka !== "") ?
-                    <select value={creds.village} name="village" onChange={onChange} className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example">
+                    <select value={creds.village} name="village" onChange={onChange} className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example">
                         <option value={""}>Select Village</option>
                         {
                             Villages.villages[district][taluka].map(taluka => {
@@ -164,7 +164,7 @@ const Farmer = (props) => {
                         }
                     </select> : ''}
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="phone-number">Phone:</span>
+                    <span className="input-group-text input-group-required-text" id="phone-number">Phone:</span>
                     <input value={creds.phone} onChange={onChange} type="number" minLength={10} required={true} name="phone" className="form-control" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="phone-number" />
                 </div>
                 <div className="input-group mb-3">
@@ -176,8 +176,8 @@ const Farmer = (props) => {
                     <span className="input-group-text" id="addhar-card">Addhar:</span>
                     <input type="number" onChange={onChange} value={creds.addhar} name="addhar" className="form-control" placeholder="Addhar Card Number" aria-label="addhar-card" aria-describedby="addhar-card" />
                 </div>
-                <select name="gender" value={creds.gender} onChange={onChange} className="form-select form-select-sm" required aria-label=".form-select-sm example">
-                    <option value="">Gender</option>
+                <select name="gender" value={creds.gender} onChange={onChange} className="form-select form-select mb-3 input-group-required-text input-group-required-text">
+                    <option cla value="">Gender</option>
                     <option value="1">Male</option>
                     <option value="2">Female</option>
                     <option value="3">Transgender</option>

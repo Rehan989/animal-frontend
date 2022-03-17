@@ -87,15 +87,15 @@ const AiDetails = (props) => {
             <h2 className=''> AI Details</h2>
             <form className='mt-3' onSubmit={handleAiDetailsSubmit}>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Animal Tag number:</span>
+                    <span className="input-group-text input-group-required-text" id="tag-number">Animal Tag number:</span>
                     <input type="text" className="form-control" required={true} placeholder="Tag number" aria-label="tag-number" aria-describedby="tag-number" name="animalTagNo" value={creds.animalTagNo} onChange={onChange} />
                 </div>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="date">Date:</span>
+                    <span className="input-group-text input-group-required-text" id="date">Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="Tag Number" aria-label="Date" aria-describedby="date" name="date" value={creds.date} onChange={onChange} />
                 </div>
                 {(showBullAccounts) ?
-                    <select className="form-select form-select mb-3" required={true} name="bullId" value={creds.bullId} onChange={onChange} aria-label=".form-select example">
+                    <select className="form-select form-select mb-3 input-group-required-text" required={true} name="bullId" value={creds.bullId} onChange={onChange} aria-label=".form-select example">
                         <option value={""}>Select Bull Account</option>
                         {
                             bullAccounts.map(function (bull) {
@@ -103,7 +103,7 @@ const AiDetails = (props) => {
                             })
                         }
                     </select> : ''}
-                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" name="freshReports" value={creds.freshReports} onChange={onChange} >
+                <select className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example" name="freshReports" value={creds.freshReports} onChange={onChange} >
                     <option value="">Fresh Reports</option>
                     <option value="fresh">Fresh</option>
                     <option value="repeat-r1">Repeat R1</option>

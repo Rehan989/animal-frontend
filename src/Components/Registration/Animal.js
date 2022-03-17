@@ -139,12 +139,12 @@ const Animal = (props) => {
             <h2 className=''> Register Animal</h2>
             <form onSubmit={handleAnimalRegister} className='mt-3'>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="famerName">Farmer name:</span>
+                    <span className="input-group-text input-group-required-text" id="famerName">Farmer name:</span>
                     <input type="text" className="form-control" required={true} placeholder="Farmer Name" aria-label="Farmer name" aria-describedby="farmerName" name="farmerName" value={creds.farmerName} onChange={onChange} />
                     <button type="button" className='btn btn-primary' onClick={searchFarmer}>Search Farmer</button>
                 </div>
                 {(showFarmer) ?
-                    <select className="form-select form-select mb-3" required={true} name="farmerId" value={creds.farmerId} onChange={onChange} aria-label=".form-select example">
+                    <select className="form-select form-select mb-3 input-group-required-text" required={true} name="farmerId" value={creds.farmerId} onChange={onChange} aria-label=".form-select example">
                         <option>Select a Farmer</option>
                         {
                             farmers.map(function (farmer) {
@@ -153,14 +153,14 @@ const Animal = (props) => {
                         }
                     </select> : ''}
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Tag number:</span>
+                    <span className="input-group-text input-group-required-text" id="tag-number">Tag number:</span>
                     <input type="text" className="form-control" required={true} placeholder="Tag Number" aria-label="Full name" aria-describedby="tag-number" name="tagNumber" value={creds.tagNumber} onChange={onChange} />
                 </div>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="date">Date:</span>
+                    <span className="input-group-text input-group-required-text" id="date">Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="Tag Number" aria-label="Date" aria-describedby="date" name="date" value={creds.date} onChange={onChange} />
                 </div>
-                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" name="species" value={creds.species} onChange={onChange}>
+                <select className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example" name="species" value={creds.species} onChange={onChange}>
                     <option value="">Species</option>
                     {
                         (!SpeciesLoading) ?
@@ -174,7 +174,7 @@ const Animal = (props) => {
                     }
                 </select>
                 {(creds.species !== "") ?
-                    <select className="form-select form-select mb-3" required={true} aria-label=".form-select-sm example" name="breed" value={creds.breed} onChange={onChange}>
+                    <select className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-sm example" name="breed" value={creds.breed} onChange={onChange}>
                         <option value="">Breed</option>
                         {
                             (!SpeciesLoading) ?
@@ -189,14 +189,14 @@ const Animal = (props) => {
                     </select>
                     : ''}
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="age">Age:</span>
+                    <span className="input-group-text input-group-required-text" id="age">Age:</span>
                     <input type="number" minLength={10} required={true} className="form-control" placeholder="Age" aria-label="age" aria-describedby="age" name="age" value={creds.age} onChange={onChange} />
                 </div>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="calvings">No of calvings:</span>
+                    <span className="input-group-text input-group-required-text" id="calvings">No of calvings:</span>
                     <input type="number" className="form-control" placeholder="Number of calvings" aria-label="calvings" aria-describedby="calvings" required={true} name="noOfCalvings" value={creds.noOfCalvings} onChange={onChange} />
                 </div>
-                <button type="submit" className="btn btn-primary" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Submitting...' : 'Submit'}</button>
+                <button type="submit" className="btn btn-primary input-group-required-text" disabled={(submitButtonLoading) ? true : false}>{(submitButtonLoading) ? 'Submitting...' : 'Submit'}</button>
             </form>
         </div>
     </div>;

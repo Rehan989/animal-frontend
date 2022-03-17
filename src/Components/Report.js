@@ -82,14 +82,14 @@ const Report = (props) => {
       <div className='container'>
         <h1 className='my-3'>Generate report</h1>
         <form onSubmit={generateReport}>
-          <select required className="form-select mb-3" aria-label="Default select example" value={creds.reportType} onChange={onChange} name="reportType">
+          <select required className="form-select mb-3 input-group-required-text" aria-label="Default select example" value={creds.reportType} onChange={onChange} name="reportType">
             <option value="">Report name</option>
             <option value="ai">AI report</option>
             <option value="pd">PD report</option>
             <option value="calf-born">Calf-born Report</option>
           </select>
           <select onChange={(e) => { setDistrict(e.target.value); setTaluka("") }
-          } className="form-select form-select mb-3" aria-label=".form-select-lg example">
+          } className="form-select form-select mb-3 input-group-required-text" aria-label=".form-select-lg example">
             <option value={""}>All villages</option>
             {
               (!VillagesLoading) ?
@@ -105,7 +105,7 @@ const Report = (props) => {
           </select>
           {(!VillagesLoading && district !== "") ?
             <select onChange={(e) => setTaluka(e.target.value)
-            } className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example">
+            } className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example">
               <option value={""}>Select Taluka</option>
               {
                 Object.keys(Villages.villages[district]).map(taluka => {
@@ -116,7 +116,7 @@ const Report = (props) => {
               }
             </select> : ''}
           {(!VillagesLoading && taluka !== "") ?
-            <select value={creds.village} name="village" onChange={onChange} className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example">
+            <select value={creds.village} name="village" onChange={onChange} className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example">
               <option value={""}>Select Village</option>
               {
                 Villages.villages[district][taluka].map(taluka => {
@@ -127,10 +127,10 @@ const Report = (props) => {
               }
             </select> : ''}
           <div className="input-group mb-3">
-            <span className="input-group-text" id="date">Period From:</span>
+            <span className="input-group-text input-group-required-text" id="date">Period From:</span>
             <input type="date" className="form-control" required={true} placeholder="Period from" aria-label="Date" aria-describedby="date" value={creds.periodFrom} name="periodFrom" onChange={onChange} />
 
-            <span className="input-group-text" id="date">Period to:</span>
+            <span className="input-group-text input-group-required-text" id="date">Period to:</span>
             <input type="date" className="form-control" required={true} placeholder="Period to" aria-label="Date" aria-describedby="date"
               value={creds.periodTo} name="periodTo" onChange={onChange} />
           </div>

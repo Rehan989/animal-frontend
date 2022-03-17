@@ -235,7 +235,7 @@ const PDRegistration = (props) => {
             <h2 className=''> Register PD Details</h2>
             <form onSubmit={registerPD} className='mt-3'>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Tag number of animal:</span>
+                    <span className="input-group-text input-group-required-text" id="tag-number">Tag number of animal:</span>
                     <input type="number" className="form-control" required={true} placeholder="Enter Animal Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
                     <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
                 </div>
@@ -270,10 +270,10 @@ const PDRegistration = (props) => {
                     <option value="repeat-r1">Repeat R2</option>
                 </select>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="date">PD Date:</span>
+                    <span className="input-group-text input-group-required-text" id="date">PD Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="PD date" aria-label="Date" aria-describedby="date" onChange={onChange} value={creds.pdDate} name="pdDate" />
                 </div>
-                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" value={creds.pdResult} name="pdResult" onChange={onChange}>
+                <select className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example" value={creds.pdResult} name="pdResult" onChange={onChange}>
                     <option value="">PD Result</option>
                     <option value="pregnant">Pregnant</option>
                     <option value="non-pregnant">Non Pregnant</option>

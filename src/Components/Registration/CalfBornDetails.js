@@ -9,7 +9,7 @@ const CalfBornDetails = (props) => {
         aiDate: "",
         gender: "",
         easeOfCalvings: "",
-        tagNo: "",
+
         gestationDays: "",
         villageName: "",
         ownerName: "",
@@ -242,7 +242,7 @@ const CalfBornDetails = (props) => {
             <h2 className=''> Register Calf Born Details</h2>
             <form onSubmit={handleCalfBornDetailsRegistration} className='mt-3'>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="tag-number">Tag number:</span>
+                    <span className="input-group-text input-group-required-text " id="tag-number">Tag number:</span>
                     <input type="number" className="form-control" required={true} placeholder="Enter animal Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
                     <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
                 </div>
@@ -269,16 +269,16 @@ const CalfBornDetails = (props) => {
                     <option value="repeat-r1">Repeat R2</option>
                 </select>
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="date">Calf Born Date:</span>
+                    <span className="input-group-text input-group-required-text" id="date">Calf Born Date:</span>
                     <input type="date" className="form-control" required={true} placeholder="Calf Born Date" aria-label="calf-born-date" aria-describedby="calf-born-date" name="calfBornDate" value={creds.calfBornDate} onChange={onChange} />
                 </div>
-                <select className="form-select form-select mb-3" required={true} aria-label=".form-select example" name="gender" value={creds.gender} onChange={onChange} >
+                <select className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select example" name="gender" value={creds.gender} onChange={onChange} >
                     <option value="">Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="transgender">Transgender</option>
                 </select>
-                <select className="form-select form-select mb-3" required={true} aria-label=".form-select-lg example" name="easeOfCalvings" value={creds.easeOfCalvings} onChange={onChange}>
+                <select className="form-select form-select mb-3 input-group-required-text " required={true} aria-label=".form-select-lg example" name="easeOfCalvings" value={creds.easeOfCalvings} onChange={onChange}>
                     <option value="">Ease of Calving</option>
                     <option value="Normal">Normal</option>
                     <option value="Dystokia">Dystokia</option>
