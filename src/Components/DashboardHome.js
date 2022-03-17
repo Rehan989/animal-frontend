@@ -120,7 +120,7 @@ const DashboardHome = (props) => {
             })
             const data = await response.json()
             if (data.success) {
-                props.setshowAlert("Success", `Technician user created Successfully!`)
+                props.setshowAlert("Success", `AI Technician user created Successfully!`)
                 settechnicianCreds({
                     technicianAddress: "", technicianEducation: "", technicianVillageName: "", technicianTaluka: "",
                     technicianDistrict: "", technicianDoctor: "", technicianDoctorId: "", technicianName: "", technicianGender: "", technicianEmail: "", technicianPassword: ""
@@ -199,7 +199,7 @@ const DashboardHome = (props) => {
             {/* for doctor registration */}
             <div className="collapse mt-2" id="doctorCollapse">
                 <div className="card card-body">
-                    <h1>Add new doctor</h1>
+                    <h1>Add new Veterinary Dispensary</h1>
                     <form onSubmit={handleDoctorSignUpSubmit}>
                         <div className="mb-3">
                             <label htmlFor="doctorName" className="form-label">Full name</label>
@@ -230,7 +230,7 @@ const DashboardHome = (props) => {
             {/* for technician registration */}
             <div className="collapse mt-2" id="techncianCollapse">
                 <div className="card card-body">
-                    <h1>Add new technician</h1>
+                    <h1>Add new AI technician</h1>
                     <form onSubmit={handleTechnicianSignupSubmit}>
                         <div className="mb-3">
                             <label htmlFor="technicianName" className="form-label">Full name</label>

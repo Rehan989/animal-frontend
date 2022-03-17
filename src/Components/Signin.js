@@ -73,8 +73,8 @@ const Signin = (props) => {
                     <form action='/register/farmer' onSubmit={handleSubmit}>
                         <select className="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name='userType' onChange={onChange} required>
                             <option defaultValue value="0">Who are you?</option>
-                            <option value="1">Doctor</option>
-                            <option value="2">Technician</option>
+                            <option value="1">Veterinary Dispensary</option>
+                            <option value="2">AI Technician</option>
                         </select>
                         <div className="form-floating mb-3">
                             <input type="email" name="email" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={onChange} value={SignInCreds.email} required />
