@@ -1,9 +1,10 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = (props) => {
     let navigate = useNavigate();
+    const [user, setUser] = useState({ name: "" })
     async function verifyUser(auth_token, userType) {
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/auth/user/${userType}`, {
@@ -21,6 +22,9 @@ const Navbar = (props) => {
                 navigate('/')
                 props.setshowAlert("Error", "Invalid credentials!")
                 return
+            }
+            if (data.email) {
+                setUser(data)
             }
             if (data.user_type === 'admin') {
                 navigate('/dashboard')
@@ -47,7 +51,10 @@ const Navbar = (props) => {
 
     }, []);
     return <div>
-        <nav className="nav mt-3 mx-5 nav-pills nav-fill">
+        <div className='top-panel container mt-1 d-flex justify-content-center'>
+            Hello,&nbsp;<strong>{user.name}</strong>
+        </div>
+        <nav className="nav mt-2 mx-5 nav-pills nav-fill">
             {
                 (localStorage.getItem('user_type') === 'technician') ?
                     <>
