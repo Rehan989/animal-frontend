@@ -68,6 +68,7 @@ const Navbar = (props) => {
                     </>
                     : ''}
             <a className="nav-link" href="/report">Report</a>
+            <a className="nav-link" href="/summary">Summary</a>
             <a className="nav-link" href="/logout" role="button" >Logout</a>
         </nav>
     </div>;

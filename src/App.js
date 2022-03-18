@@ -15,6 +15,7 @@ import DashboardHome from './Components/DashboardHome';
 import { useState } from 'react';
 import Logout from './Components/Logout';
 import './App.css'
+import Summary from './Components/Summary';
 
 function App() {
   const [showAlert, setshowAlert] = useState(false);
@@ -52,6 +53,7 @@ function App() {
           <Route exact path="/dashboard" element={<Dashboard setshowAlert={setAlert} />} />
           <Route exact path="/dashboard/home" element={<DashboardHome setshowAlert={setAlert} />} />
           <Route exact path="/report" element={<Report setshowAlert={setAlert} />} />
+          <Route exact path="/summary" element={<Summary setshowAlert={setAlert} />} />
           {
             (localStorage.getItem('user_type') === 'technician') ?
               <>
