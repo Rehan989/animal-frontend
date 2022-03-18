@@ -21,8 +21,11 @@ const SearchFarmer = (props) => {
       if (searchType.toLowerCase() === "farmername") {
         query = "name";
       }
-      else {
+      else if (searchType.toLowerCase() === "animaltagno")
         query = "animaltagno"
+      else {
+        props.setshowAlert("Error", `Please select the search type!`)
+        return
       }
 
       const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer?${query}=${creds.inputValue}`, {
