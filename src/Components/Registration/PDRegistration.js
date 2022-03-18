@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar'
+import { useSearchParams } from "react-router-dom";
 
 const PDRegistration = (props) => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [tagNo, settagNo] = useState("");
 
     const [creds, setCreds] = useState({
@@ -228,6 +230,15 @@ const PDRegistration = (props) => {
         }
     }
 
+    useEffect(() => {
+        let animalTagNo = searchParams.get('animal');
+        if (animalTagNo) {
+            settagNo(animalTagNo);
+            document.getElementById("searchAnimal").click()
+        }
+    }, [])
+
+
 
     return <div>
         <Navbar />
@@ -237,7 +248,7 @@ const PDRegistration = (props) => {
                 <div className="input-group mb-3">
                     <span className="input-group-text input-group-required-text" id="tag-number">Tag number of animal:</span>
                     <input type="number" className="form-control" required={true} placeholder="Enter Animal Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
-                    <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
+                    <button onClick={() => searchAnimal(tagNo)} id="searchAnimal" type='button' className='btn btn-primary'>Search</button>
                 </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tag-number">Bull ID:</span>

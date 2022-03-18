@@ -113,29 +113,42 @@ const SearchFarmer = (props) => {
                         farmer.animals.map(animal => {
 
                           if (animal._id)
-                            return <div key={`${animal._id}`}>
-                              <div className="row align-items-start">
-                                <div className='col'>
-                                  {animal.tagNo}
+                            return <React.Fragment key={`${animal._id}`}>
+                              <div>
+                                <div className="row align-items-start">
+                                  <div className='col'>
+                                    {animal.tagNo}
+                                  </div>
+                                  <div className='col'>
+                                    {animal.date.substring(0, 10)}
+                                  </div>
+                                  <div className='col'>
+                                    {animal.species}
+                                  </div>
+                                  <div className='col'>
+                                    {animal.breed}
+                                  </div>
+                                  <div className='col'>
+                                    {animal.age}
+                                  </div>
+                                  <div className='col'>
+                                    {animal.noOfCalvings}
+                                  </div>
                                 </div>
-                                <div className='col'>
-                                  {animal.date.substring(0, 10)}
+                                <div className='d-flex justify-content-center column mt-2'>
+                                  <div className=''>
+                                    <a href={`/register/aidetails?animal=${animal.tagNo}`} type="button" className="btn btn-sm mx-3 btn-outline-primary">FILL AI</a>
+                                  </div>
+                                  <div className=''>
+                                    <a href={`/register/pd?animal=${animal.tagNo}`} type="button" className="btn btn-sm mx-3 btn-outline-primary">FILL PD</a>
+                                  </div>
+                                  <div className=''>
+                                    <a href={`/register/calfdetails?animal=${animal.tagNo}`} type="button" className="btn btn-sm mx-3 btn-outline-primary">FILL CALF BORN</a>
+                                  </div>
                                 </div>
-                                <div className='col'>
-                                  {animal.species}
-                                </div>
-                                <div className='col'>
-                                  {animal.breed}
-                                </div>
-                                <div className='col'>
-                                  {animal.age}
-                                </div>
-                                <div className='col'>
-                                  {animal.noOfCalvings}
-                                </div>
+                                <hr />
                               </div>
-                              <hr />
-                            </div>
+                            </React.Fragment>
                           else
                             return ""
                         }) : <h3>No Animals registered</h3>}
@@ -145,6 +158,8 @@ const SearchFarmer = (props) => {
               </div>
             })
             : ''}
+
+          {showDataNotFound ? <h1>No data found!</h1> : ''}
         </div>
       </div>
     </div>

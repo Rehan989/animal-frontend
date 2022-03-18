@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from "react-router-dom";
 import Navbar from '../Navbar';
 
 const CalfBornDetails = (props) => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [tagNo, settagNo] = useState("");
     const [creds, setCreds] = useState({
         animalTagNo: "",
@@ -21,8 +23,6 @@ const CalfBornDetails = (props) => {
 
     const onChange = (e) => {
         if (e.target.name === "calfBornDate" && creds.aiDate !== "") {
-            console.log(e.target.name);
-            console.log(creds);
             let aiDate = new Date(creds.aiDate.substring(0, 10));
             let gestationDays = new Date(e.target.value);
             setCreds({ ...creds, gestationDays: (gestationDays.getTime() - aiDate.getTime()) / (1000 * 3600 * 24), [e.target.name]: e.target.value });
@@ -137,10 +137,8 @@ const CalfBornDetails = (props) => {
     const searchAnimal = async (tagno) => {
         try {
             setCreds({ ...creds, animalTagNo: tagno });
-            console.log(tagno)
 
             let aidetails = await fetchAiDetails(tagno);
-            console.log(aidetails)
             if (!aidetails) {
                 return
             }
@@ -158,7 +156,6 @@ const CalfBornDetails = (props) => {
                 let farmerDetails = await fetchFarmer(data.animals.farmerId);
                 let techncianUser = await fetchTechnician(localStorage.getItem('auth_token'), localStorage.getItem('user_type'))
                 let doctorDetails = await fetchDoctor(techncianUser.doctor);
-                console.log(aidetails)
                 setCreds({
                     ...creds,
                     animalTagNo: tagno,
@@ -234,6 +231,14 @@ const CalfBornDetails = (props) => {
         }
     }
 
+    useEffect(() => {
+        let animalTagNo = searchParams.get('animal');
+        if (animalTagNo) {
+            settagNo(animalTagNo);
+            document.getElementById("searchAnimal").click()
+        }
+    }, [])
+
 
 
     return <div>
@@ -244,7 +249,7 @@ const CalfBornDetails = (props) => {
                 <div className="input-group mb-3">
                     <span className="input-group-text input-group-required-text " id="tag-number">Tag number:</span>
                     <input type="number" className="form-control" required={true} placeholder="Enter animal Tag Number" aria-label="Tag Number" aria-describedby="tag-number" value={tagNo} onChange={(e) => settagNo(e.target.value)} />
-                    <button onClick={() => searchAnimal(tagNo)} type='button' className='btn btn-primary'>Search</button>
+                    <button onClick={() => searchAnimal(tagNo)} type='button' id="searchAnimal" className='btn btn-primary'>Search</button>
                 </div>
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="tag-number">Village name:</span>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from '../Navbar';
+import { useSearchParams } from "react-router-dom";
 
 const AiDetails = (props) => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [creds, setCreds] = useState({
         bullId: "",
         date: "",
@@ -78,6 +80,12 @@ const AiDetails = (props) => {
             await fetchBullAccounts();
         }
         fetchData();
+
+        let animalTagNo = searchParams.get('animal');
+        if (animalTagNo) {
+            setCreds({ ...creds, animalTagNo: animalTagNo })
+        }
+
 
     }, []);
 

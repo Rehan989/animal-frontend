@@ -177,7 +177,7 @@ const Farmer = (props) => {
                     <input type="number" onChange={onChange} value={creds.addhar} name="addhar" className="form-control" placeholder="Addhar Card Number" aria-label="addhar-card" aria-describedby="addhar-card" />
                 </div>
                 <select name="gender" value={creds.gender} onChange={onChange} className="form-select form-select mb-3 input-group-required-text input-group-required-text">
-                    <option cla value="">Gender</option>
+                    <option value="">Gender</option>
                     <option value="1">Male</option>
                     <option value="2">Female</option>
                     <option value="3">Transgender</option>
