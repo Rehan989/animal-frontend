@@ -2,22 +2,30 @@ import React, { useState } from 'react';
 import Navbar from '../Navbar';
 
 const SearchFarmer = (props) => {
-  const [farmerName, setFarmerName] = useState("");
+  const [creds, setCreds] = useState({ inputValue: "" });
   const [farmers, setFarmers] = useState([]);
-  const [showFarmers, setshowFarmers] = useState(false);
+  const [showData, setShowData] = useState(false);
   const [showDataNotFound, setshowDataNotFound] = useState(false);
   const [searchButtonLoading, setsearchButtonLoading] = useState(false);
-  const [searchType, setSearchType] = useState("Search By")
+  const [searchType, setSearchType] = useState("Search By");
+
+  const handleChange = (e) => {
+    setCreds({ ...creds, [e.target.name]: e.target.value })
+  }
 
   const searchFarmer = async (e) => {
     e.preventDefault();
     setsearchButtonLoading(true)
     try {
-      if (farmerName.length <= 3) {
-        props.setshowAlert("Error", "Search query must be greater than 3 characters")
-        return
+      let query = "name";
+      if (searchType.toLowerCase() === "farmername") {
+        query = "name";
       }
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer?name=${farmerName}`, {
+      else {
+        query = "animaltagno"
+      }
+
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/search/farmer?${query}=${creds.inputValue}`, {
         "method": "GET",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +42,7 @@ const SearchFarmer = (props) => {
           return
         }
         setshowDataNotFound(false)
-        setshowFarmers(true)
+        setShowData(true)
       }
       else {
         props.setshowAlert("Error", `${data.error}`)
@@ -57,22 +65,19 @@ const SearchFarmer = (props) => {
       <h1>
         Search Farmer
       </h1>
-
-
       <form onSubmit={searchFarmer}>
         <div className="input-group mb-3">
           {/* search by field */}
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="searchby" data-bs-toggle="dropdown" aria-expanded="false">
+          <div className="dropdown">
+            <button className="btn btn-primary dropdown-toggle" type="button" id="searchby" data-bs-toggle="dropdown" aria-expanded="false">
               {searchType}
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <li><button class="dropdown-item" type="button" onClick={() => setSearchType("Name")}>Farmer's Name</button></li>
-              <li><button class="dropdown-item" type="button" onClick={() => setSearchType("FarmerTagNo")}>Farmer's Tag Number</button></li>
-              <li><button class="dropdown-item" type="button" onClick={() => setSearchType("AnimalTagNo")}>Animal's Tag Number</button></li>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <li><button className="dropdown-item" type="button" onClick={() => setSearchType("FarmerName")}>Farmer's Name</button></li>
+              <li><button className="dropdown-item" type="button" onClick={() => setSearchType("AnimalTagNo")}>Animal's Tag Number</button></li>
             </ul>
           </div>
-          <input value={farmerName} onChange={(e) => setFarmerName(e.target.value)} type="text" className="form-control" placeholder={searchType} aria-label="Username" aria-describedby="basic-addon1" />
+          <input name="inputValue" value={creds.inputValue} onChange={handleChange} type="text" className="form-control" placeholder={searchType} aria-label="Username" aria-describedby="basic-addon1" />
 
 
           <button type="submit" className="btn btn-primary" disabled={(searchButtonLoading) ? true : false}>{(searchButtonLoading) ? 'Submitting...' : 'Submit'}</button>
@@ -81,7 +86,7 @@ const SearchFarmer = (props) => {
 
       <div>
         <div className='my-5'>
-          {showFarmers ?
+          {showData ?
             farmers.map(farmer => {
               return <div key={`${farmer.mobileNo}`} className="card my-3">
                 <ul className="list-group list-group-flush">
@@ -103,7 +108,7 @@ const SearchFarmer = (props) => {
                       </div>
                       {(farmer.animals.length !== 0) ?
                         farmer.animals.map(animal => {
-                          console.log(animal._id)
+
                           if (animal._id)
                             return <div key={`${animal._id}`}>
                               <div className="row align-items-start">
@@ -137,7 +142,6 @@ const SearchFarmer = (props) => {
               </div>
             })
             : ''}
-          {showDataNotFound ? <h1>No data found!</h1> : ''}
         </div>
       </div>
     </div>
