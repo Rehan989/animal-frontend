@@ -45,7 +45,7 @@ const SimpleCard = (props) => {
                         <h6>Select Villages</h6>
                         <div>
                             <select onChange={(e) => { setDistrict(e.target.value); setTaluka("") }
-                            } className="form-select form-select mb-3 input-group-required-text" required={true} aria-label=".form-select-lg example">
+                            } className="form-select form-select mb-3 input-group-required-text" aria-label=".form-select-lg example">
                                 <option value={""}>Select District</option>
                                 {
                                     (!VillagesLoading) ?

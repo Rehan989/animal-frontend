@@ -26,6 +26,7 @@ const Summary = (props) => {
     })
 
     const handlePdFilterChange = (e) => {
+        console.log(pdSummaryFilters)
         setpdSummaryFilters({ ...pdSummaryFilters, [e.target.name]: e.target.value });
     }
 
@@ -66,7 +67,7 @@ const Summary = (props) => {
     }
     async function getPdSummary() {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/summary/pd?village=${aiSummaryFilters.village}&periodfrom=${aiSummaryFilters.periodFrom}&periodto=${aiSummaryFilters.periodTo}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/summary/pd?village=${pdSummaryFilters.village}&periodfrom=${pdSummaryFilters.periodFrom}&periodto=${pdSummaryFilters.periodTo}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -90,7 +91,7 @@ const Summary = (props) => {
     }
     async function getCalfBornSummary() {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/summary/calf-born?village=${aiSummaryFilters.village}&periodfrom=${aiSummaryFilters.periodFrom}&periodto=${aiSummaryFilters.periodTo}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/summary/calf-born?village=${calfBornSummaryFilters.village}&periodfrom=${calfBornSummaryFilters.periodFrom}&periodto=${calfBornSummaryFilters.periodTo}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -117,7 +118,6 @@ const Summary = (props) => {
         e.preventDefault();
         setaiSubmitButtonLoading(true)
         try {
-            console.log(aiSummaryFilters)
             await getAiSummary();
         }
         catch (error) {
@@ -140,7 +140,7 @@ const Summary = (props) => {
             props.setshowAlert("Error", "Internal Server Error")
         }
         finally {
-            setpdSubmitButtonLoading(true)
+            setpdSubmitButtonLoading(false)
         }
     }
 
